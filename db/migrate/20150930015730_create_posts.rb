@@ -3,7 +3,7 @@ class CreatePosts < ActiveRecord::Migration
     create_table :posts do |t|
       t.string :title
       t.string :content
-      t.intrger :view
+      t.intrger :view, default: 0, null: false
       t.intrger :status
       t.timestamps null: false
       # foreign key.  belongs_to user, category.
