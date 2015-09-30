@@ -4,7 +4,7 @@ class CreateFriendships < ActiveRecord::Migration
       t.integer :status
       t.timestamps null: false
       # foreign key.  belongs_to post, tag.
-      t.intrger :user_id
+      t.integer :user_id
       t.integer :friend_id
     end
   end
