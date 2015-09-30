@@ -6,5 +6,7 @@ class CreatePostTagships < ActiveRecord::Migration
       t.integer :post_id
       t.integer :tag_id
     end
+    add_index :post_tagships, :post_id
+    add_index :post_tagships, :tag_id
   end
 end

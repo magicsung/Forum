@@ -11,8 +11,5 @@ class CreatePosts < ActiveRecord::Migration
       t.integer :category_id
     end
     # has_many like, comment, tag.
-    add_index :likes, :post_id
-    add_index :comments, :post_id
-    add_index :post_tagships, :post_id
   end
 end

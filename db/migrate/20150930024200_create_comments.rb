@@ -9,6 +9,6 @@ class CreateComments < ActiveRecord::Migration
       t.integer :user_id
       t.integer :post_id
     end
-    
+    add_index :comments, :post_id
   end
 end

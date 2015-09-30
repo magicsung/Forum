@@ -46,7 +46,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
     # has_many like, post, category, comment.
     add_index :likes, :user_id
     add_index :posts, :user_id
-    add_index :categorys, :user_id
+    add_index :categories, :user_id
     add_index :comments, :user_id
     
   end
