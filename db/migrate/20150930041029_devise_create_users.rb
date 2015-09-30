@@ -44,10 +44,10 @@ class DeviseCreateUsers < ActiveRecord::Migration
     # add_index :users, :unlock_token,         unique: true
 
     # has_many like, post, category, comment.
-    add_index :like, :user_id
-    add_index :post, :user_id
-    add_index :category, :user_id
-    add_index :comment, :user_id
+    add_index :likes, :user_id
+    add_index :posts, :user_id
+    add_index :categorys, :user_id
+    add_index :comments, :user_id
     
   end
 end

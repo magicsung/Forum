@@ -7,6 +7,6 @@ class CreateCategories < ActiveRecord::Migration
       t.integer :user_id
     end
     # has_many post.
-    add_index :post, :category_id
+    add_index :posts, :category_id
   end
 end

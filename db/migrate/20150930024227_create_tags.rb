@@ -5,6 +5,6 @@ class CreateTags < ActiveRecord::Migration
       t.timestamps null: false
     end
     # has_many post.
-    add_index :post_tagship, :tag_id
+    add_index :post_tagships, :tag_id
   end
 end
