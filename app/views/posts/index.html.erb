@@ -1,17 +1,27 @@
-
 <table class="table">
+  <tr>
+    <th><p>Title</p></th>
+    <th><p>Content</p></th>
+    <th><p>Created at</p></th>
+  </tr>
   <% @posts.each do |p| %>
     <tr>
       <td>
-        <%= p.title %>
+        <%= link_to p.title, post_path(p) %>
       </td>
       <td>
         <%= p.content %>
       </td>
       <td>
-        <%= link_to "show", post_path(p), :class => "btn btn-info" %>
+        <%= p.created_at %>
+      </td>
+      <td>
+        <%= link_to "Show", post_path(p), :class => "btn btn-info" %>
+        <%= link_to "Edit", edit_post_path(p), :class => "btn btn-primary" %>
+        <%= link_to "Delete", post_path(p),:method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-danger" %>
       </td>
     </tr>
   <% end %>
-  
 </table>
+
+<%= link_to "New Post", new_post_path, :class => "btn btn-success" %>

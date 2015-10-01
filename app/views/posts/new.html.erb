@@ -1,0 +1,10 @@
+<h3>NEW POST</h3>
+
+<%= form_for @post, :url => { :controller => 'posts', :action => 'create' } do |n|  %>
+
+<%= render :partial => 'form', :locals => { :n => n } %>
+
+<%= n.submit "Create", :class => "btn btn-primary" %>
+<%= link_to "Cancel", posts_path, :class => "btn btn-info" %>
+
+<% end %>

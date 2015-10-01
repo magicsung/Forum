@@ -1,0 +1,10 @@
+<h3>EDIT POST</h3>
+
+<%= form_for @post, :url => { :controller => 'posts', :action => 'update' } do |n|  %>
+
+<%= render :partial => 'form', :locals => { :n => n } %>
+
+<%= n.submit "Update", :class => "btn btn-primary" %>
+<%= link_to "Cancel", posts_path, :class => "btn btn-info" %>
+
+<% end %>
