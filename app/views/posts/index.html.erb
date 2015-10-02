@@ -37,6 +37,9 @@
       <% end %>
     </th>
     <th>
+      comment_user
+    </th>
+    <th>
       <%= link_to posts_path( :order => "last_comment_time" ) do %>
         last_comment_time <i class="caret"></i>
       <% end %>
@@ -58,6 +61,12 @@
       <td><%= p.category.try(:name) %></td>
       <td><%= link_to p.title, post_path(p) %></td>
       <td><%= p.comcount %></td>
+      <td>
+        <% b = p.comments.map do |x|  x.user.name  end %>
+        <% b.uniq.map do |y| %>
+          <%= y %>
+        <% end %>
+      </td>
       <td>
         <% if p.try(:last_comment_time) %>
           <%= p.try(:last_comment_time) %>
