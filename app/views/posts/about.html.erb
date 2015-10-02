@@ -1,0 +1,30 @@
+<h3>About this site</h3>
+
+
+<h4>Hi! Welcome!</h4>
+
+
+<!-- 顯示統計數據 1. 全站有多少使用者 2. 全站總共有多少主題和回覆  -->
+<table class="table">
+  <tr>
+    <td>
+      <p>
+        How many users: <%= User.all.size %>
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>
+        How many posts: <%= Post.all.size %>
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>
+        How may comments: <%= Comment.all.size %>
+      </p>
+    </td>
+  </tr>
+</table>
