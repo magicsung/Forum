@@ -3,31 +3,34 @@ class PostsController < ApplicationController
   before_action :set_post, :only => [ :show, :edit, :update, :destroy ]
 
   def index
-    @posts = Post.page(params[:page]).per(10)
+    @posts = pages
 
     # sort by comments
     if (params[:order] == 'comments')
-      @posts = Post.order('comcount DESC').page(params[:page]).per(10)
+      @posts = pages.order('comcount DESC')
     # sort by views
     elsif (params[:order] == 'views')
-      @posts = Post.order('view DESC').page(params[:page]).per(10)
+      @posts = pages.order('view DESC')
     # sort by create_time
     elsif (params[:order] == 'createtime')
-      @posts = Post.order('created_at DESC').page(params[:page]).per(10)
+      @posts = pages.order('created_at DESC')
     # sort by last_comment_time
     elsif (params[:order] == 'last_comment_time')
-      @posts = Post.order('last_comment_time DESC').page(params[:page]).per(10)
+      @posts = pages.order('last_comment_time DESC')
+    # sort by category
     elsif (params[:order] == 'category')
-      @posts = Post.order('category_id').page(params[:page]).per(10)
+      @posts = pages.order('category_id')  
+    end
 
     # filter
-    elsif (params[:where] == 'category_pub')
-      @posts = Post.where(category_id:1).page(params[:page]).per(10)
-    elsif (params[:where] == 'category_club')
-      @posts = Post.where(category_id:2).page(params[:page]).per(10)
-    elsif (params[:where] == 'category_event')
-      @posts = Post.where(category_id:3).page(params[:page]).per(10)
-    end
+    Category.all.map do |x| 
+      if (params[:where] == 'category_'+x.name)
+        @posts = pages.where(category_id:x.id)
+      end
+    end 
+
+    
+
   end
 
   def show
@@ -56,16 +59,30 @@ class PostsController < ApplicationController
   end
 
   def edit
+    if @post.user_id == current_user.id
+    else
+      flash[:alert] = "You are not author!!!"
+      redirect_to :action => :index
+    end
   end
 
   def update
-    @post.update( post_params )
-
-    redirect_to :action => :index
+    if @post.user_id == current_user.id
+      @post.update( post_params )
+      redirect_to :action => :index
+    else
+      flash[:alert] = "You are not author!!!"
+      redirect_to :action => :index
+    end
   end
 
   def destroy
-    @post.destroy
+    if @post.user_id == current_user.id
+      @post.destroy
+    else
+      flash[:alert] = "You are not author!!!"
+    end
+    
 
     redirect_to :action => :index
   end
@@ -75,16 +92,30 @@ class PostsController < ApplicationController
   end
 
   def profile
-    
     @user = User.find(params[:id])
     render "profile"
+  end
+
+  def favorite
+
+    if current_user.favorites.find_by_post_id(@post)
+      flash[:alert] = "Aleardy added!!!"
+    else
+      @post = Post.find(params[:id])
+      @fav = Favorite.new
+      @fav.post_id = @post.id
+      @fav.user_id = current_user.id
+      @fav.save
+      flash[:notice] = "Added to favorite"
+    end
+    redirect_to :back
   end
 
 
   private
 
-  def sort_params
-
+  def pages
+    Post.page(params[:page]).per(10)
   end
 
   def post_params

@@ -1,7 +1,18 @@
 <!-- show post -->
 
 <div class="panel panel-primary">
-  <div class="panel-heading"><strong><%= @post.title %></strong></div>
+  <div class="panel-heading">
+    <strong><%= @post.title %></strong>
+    <!-- add to favorite -->
+    <% if current_user.favorites.find_by_post_id(@post) %>
+      <button class="btn btn-danger btn-xs pull-right disabled"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Favorite</button>
+    <% else %>
+      <%= link_to favorite_path(@post), :class => "btn btn-danger btn-xs pull-right" do%>
+        <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Favorite
+      <% end %>
+    <% end %>
+  </div>
+  <div class="clearfix"></div>
   <div class="panel-body"><%= @post.content %></div>
   <div class="panel-footer">
     <small>
@@ -25,10 +36,12 @@
       <small>
         create_by <strong><%= comment.user.try(:name) %></strong> at <%= comment.created_at %>
       </small>
-      <!-- 使用者登入才能編輯、刪除 -->
+      <!-- "有權限的"使用者登入才能編輯、刪除 -->
       <% if current_user %>
-        <%= link_to 'Delete', post_comment_path(@post, comment), :method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-xs btn-danger pull-right" %>
-        <%= link_to "Edit", edit_post_comment_path(@post, comment), :class => "btn btn-xs btn-primary pull-right" %>
+        <% if current_user.id == comment.user_id %>
+          <%= link_to 'Delete', post_comment_path(@post, comment), :method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-xs btn-danger pull-right" %>
+          <%= link_to "Edit", edit_post_comment_path(@post, comment), :class => "btn btn-xs btn-primary pull-right" %>
+        <% end %>
       <% end %>
       <div class="clearfix"></div>
     </div>

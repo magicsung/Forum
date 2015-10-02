@@ -26,12 +26,19 @@ class CommentsController < ApplicationController
   end
 
   def edit
-    
+    if @comment.user_id == current_user.id
+    else
+      flash[:alert] = "You are not author!!!"
+      redirect_to :back
+    end
   end
 
   def update
-
-    @comment.update( comment_params )
+    if @comment.user_id == current_user.id
+      @comment.update( comment_params )
+    else
+      flash[:alert] = "You are not author!!!"
+    end
 
     redirect_to post_path( @post )    
   end

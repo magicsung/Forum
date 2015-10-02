@@ -1,5 +1,5 @@
 
-<!-- 分類篩選 -->
+<!-- Category filter -->
 <div class="dropdown">
   <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
     Category filter
@@ -9,20 +9,16 @@
     <li>
       <%= link_to "All", posts_path %>
     </li>
-    <li>
-      <%= link_to 'Pubs', posts_path( :where => "category_pub" ) %>
-    </li>
-    <li>
-      <%= link_to 'Clubs', posts_path( :where => "category_club" ) %>
-    </li>
-    <li>
-      <%= link_to 'Events', posts_path( :where => "category_event" ) %>
-    </li>
+    <% Category.all.map do |x| %>
+      <li>
+        <%= link_to x.name, posts_path( :where => "category_#{x.name}" ) %>
+      </li>
+    <% end %>
   </ul>
 </div>
 
 
-<!-- 分頁 -->
+<!-- pages -->
 <%= paginate @posts, :theme => 'twitter-bootstrap-3', :pagination_class => "pagination-sm" %>
 <br>
 
@@ -66,7 +62,7 @@
         <% if p.try(:last_comment_time) %>
           <%= p.try(:last_comment_time) %>
         <% else %>
-          <p>no comment yet</p>
+          no comment yet
         <% end %>
       </td>
       <td><%= p.view %></td>
@@ -78,18 +74,20 @@
       </td>
       <td><%= p.created_at %></td>
       <td>
-        <%= link_to "Show", post_path(p), :class => "btn btn-info" %>
+        <%#= link_to "Show", post_path(p), :class => "btn btn-info" %>
         <!-- "有權限的"使用者登入才能編輯、刪除 -->
-        <% if current_user.id == p.user_id %>
-          <%= link_to "Edit", edit_post_path(p), :class => "btn btn-primary" %>
-          <%= link_to "Delete", post_path(p),:method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-danger" %>
+        <% if current_user %>
+          <% if current_user.id == p.user_id %>
+            <%= link_to "Edit", edit_post_path(p), :class => "btn btn-primary btn-xs" %>
+            <%= link_to "Delete", post_path(p),:method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-danger btn-xs" %>
+          <% end %>
         <% end %>
       </td>
     </tr>
   <% end %>
 </table>
 
-<!-- 分頁 -->
+<!-- pages -->
 <%= paginate @posts, :theme => 'twitter-bootstrap-3', :pagination_class => "pagination-sm" %>
 <br>
 

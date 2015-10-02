@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root :to => "posts#index"
 
   get 'about' => "posts#about"
+  get 'favorite/:id' => "posts#favorite", as: 'favorite'
   get 'profile/:id' => "posts#profile", as: 'profile'
   
   devise_for :users
