@@ -12,3 +12,9 @@
   <%= n.label :content, "Content" %>
   <%= n.text_area :content, :class => "form-control" %>    
 </div>
+
+<div class="form-group">
+  <%= n.label :status, "Status" %>
+  <!-- status at models/post.rb -->
+  <%= n.select :status, Post::STATUS %>
+</div>

@@ -12,6 +12,12 @@
   <%= n.text_area :content, :class => "form-control" %>
 </div>
 
+<div class="form-group">
+  <%= n.label :status, "Status" %>
+  <!-- status at models/post.rb -->
+  <%= n.select :status, Post::STATUS %>
+</div>
+
 <%= n.submit "Update", :class => "btn btn-primary" %>
 <%= link_to "Cancel", :back, :class => "btn btn-info" %>
 

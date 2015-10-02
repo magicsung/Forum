@@ -1,5 +1,11 @@
 class Post < ActiveRecord::Base
 
+  STATUS = { "Public" => 1, "Draft" => 2 }
+
+  def status_name
+    STATUS[ self.status ]
+  end
+
   has_many :likes
   has_many :favorites
   has_many :comments

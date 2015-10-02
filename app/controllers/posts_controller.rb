@@ -28,9 +28,6 @@ class PostsController < ApplicationController
         @posts = pages.where(category_id:x.id)
       end
     end 
-
-    
-
   end
 
   def show
@@ -84,7 +81,7 @@ class PostsController < ApplicationController
     end
     
 
-    redirect_to :action => :index
+    redirect_to :action => :back
   end
 
   def about
@@ -97,7 +94,6 @@ class PostsController < ApplicationController
   end
 
   def favorite
-
     if current_user.favorites.find_by_post_id(@post)
       flash[:alert] = "Aleardy added!!!"
     else
@@ -115,11 +111,11 @@ class PostsController < ApplicationController
   private
 
   def pages
-    Post.page(params[:page]).per(10)
+    Post.page(params[:page]).per(10).where(status:1) # status_public
   end
 
   def post_params
-    params.require(:post).permit(:title, :content, :category_id)
+    params.require(:post).permit(:title, :content, :category_id, :status)
   end
 
   def set_post

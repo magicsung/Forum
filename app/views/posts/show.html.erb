@@ -27,7 +27,7 @@
 
 <!-- list comment -->
 
-<% @post_comments.each do |comment| %>
+<% @post_comments.where(status:1).each do |comment| %>
 
   <div class="panel panel-info">
     <div class="panel-heading"><strong><%= comment.title %></strong></div>

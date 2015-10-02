@@ -57,7 +57,7 @@ class CommentsController < ApplicationController
   protected
 
   def comment_params
-    params.require(:comment).permit(:title, :content, :comcount)
+    params.require(:comment).permit(:title, :content, :comcount, :status)
   end
 
   def find_post
