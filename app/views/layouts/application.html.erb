@@ -8,6 +8,12 @@
 </head>
 <body>
   
+  <header>
+    <div class="page-header">
+      <h1><%= link_to "Tipsy Forum", posts_path %></h1>
+    </div>
+  </header>
+
   <!-- Flash message -->
   <% if flash[:notice].present? %>
     <div class="alert alert-success" role="alert">
@@ -30,21 +36,26 @@
   <!-- user message -->
   <div class="pull-right">
     <% if current_user %>
-          <%= link_to('Log out', destroy_user_session_path, :method => :delete) %> |
-          <%= link_to('Edit', edit_registration_path(:user)) %> |
+        <span>Hi! </span><%= current_user.name %> |
+        <%= link_to('Log out', destroy_user_session_path, :method => :delete) %> |
+        <%= link_to('Edit', edit_registration_path(:user)) %> |
       <% else %>
-          <%= link_to('Sign up', new_registration_path(:user)) %> |
-          <%= link_to('Log in', new_session_path(:user)) %> |
+        <%= link_to('Sign up', new_registration_path(:user)) %> |
+        <%= link_to('Log in', new_session_path(:user)) %> |
       <% end %>
-      <%= link_to "about", about_path %>
-  </div>
-  
-  <!-- user message -->
-  <div class="pull-left">
-    <h1><%= link_to "Tipsy Forum", posts_path %></h1>
   </div>
   <div class="clearfix"></div>
+
+
 <%= yield %>
+
+
+  <footer>
+    <div class="pull-right">
+      <%= link_to "About this site", about_path %>
+    </div>
+    <div class="clearfix"></div>
+  </footer>
 
 </body>
 </html>

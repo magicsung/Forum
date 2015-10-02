@@ -3,30 +3,30 @@ class PostsController < ApplicationController
   before_action :set_post, :only => [ :show, :edit, :update, :destroy ]
 
   def index
-    @posts = Post.page(params[:page]).per(5)
+    @posts = Post.page(params[:page]).per(10)
 
     # sort by comments
     if (params[:order] == 'comments')
-      @posts = Post.order('comcount DESC').page(params[:page]).per(5)
+      @posts = Post.order('comcount DESC').page(params[:page]).per(10)
     # sort by views
     elsif (params[:order] == 'views')
-      @posts = Post.order('view DESC').page(params[:page]).per(5)
+      @posts = Post.order('view DESC').page(params[:page]).per(10)
     # sort by create_time
     elsif (params[:order] == 'createtime')
-      @posts = Post.order('created_at DESC').page(params[:page]).per(5)
+      @posts = Post.order('created_at DESC').page(params[:page]).per(10)
     # sort by last_comment_time
     elsif (params[:order] == 'last_comment_time')
-      @posts = Post.order('last_comment_time DESC').page(params[:page]).per(5)
+      @posts = Post.order('last_comment_time DESC').page(params[:page]).per(10)
     elsif (params[:order] == 'category')
-      @posts = Post.order('category_id').page(params[:page]).per(5)
+      @posts = Post.order('category_id').page(params[:page]).per(10)
 
     # filter
     elsif (params[:where] == 'category_pub')
-      @posts = Post.where(category_id:1).page(params[:page]).per(5)
+      @posts = Post.where(category_id:1).page(params[:page]).per(10)
     elsif (params[:where] == 'category_club')
-      @posts = Post.where(category_id:2).page(params[:page]).per(5)
+      @posts = Post.where(category_id:2).page(params[:page]).per(10)
     elsif (params[:where] == 'category_event')
-      @posts = Post.where(category_id:3).page(params[:page]).per(5)
+      @posts = Post.where(category_id:3).page(params[:page]).per(10)
     end
   end
 
@@ -74,7 +74,11 @@ class PostsController < ApplicationController
     render "about"
   end
 
-
+  def profile
+    
+    @user = User.find(params[:id])
+    render "profile"
+  end
 
 
   private
