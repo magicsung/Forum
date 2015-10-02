@@ -28,21 +28,31 @@
 <table class="table table-striped table-hover">
   <tr class="info">
     <th>
-      <%= link_to 'Category', posts_path( :order => "category" ) %> <i class="caret"></i>
+      <%= link_to posts_path( :order => "category" ) do %> 
+        Category <i class="caret"></i>
+      <% end %>
     </th>
     <th><p>Title</p></th>
     <th>
-      <%= link_to 'Comments', posts_path( :order => "comments" ) %> <i class="caret"></i>
+      <%= link_to posts_path( :order => "comments" ) do %>
+        Comments <i class="caret"></i>
+      <% end %>
     </th>
     <th>
-      <%= link_to 'last_comment_time', posts_path( :order => "last_comment_time" ) %> <i class="caret"></i>
+      <%= link_to posts_path( :order => "last_comment_time" ) do %>
+        last_comment_time <i class="caret"></i>
+      <% end %>
     </th>
     <th>
-      <%= link_to 'Views', posts_path( :order => "views" ) %> <i class="caret"></i>
+      <%= link_to posts_path( :order => "views" ) do %>
+        Views <i class="caret"></i>
+      <% end %>
     </th>
     <th><p>Created by</p></th>
     <th>
-      <%= link_to 'Created at', posts_path( :order => "createtime" ) %> <i class="caret"></i>
+      <%= link_to posts_path( :order => "createtime" ) do %>
+        Created_at <i class="caret"></i>
+      <% end %>
     </th>
   </tr>
   <% @posts.each do |p| %>
