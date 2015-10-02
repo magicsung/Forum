@@ -1,6 +1,6 @@
 <h3>NEW POST</h3>
 
-<%= form_for @post, :url => { :controller => 'posts', :action => 'create' } do |n|  %>
+<%= form_for @post, :url => posts_path do |n|  %>
 
 <%= render :partial => 'form', :locals => { :n => n } %>
 

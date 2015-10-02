@@ -1,6 +1,6 @@
 <h3>EDIT POST</h3>
 
-<%= form_for @post, :url => { :controller => 'posts', :action => 'update' } do |n|  %>
+<%= form_for @post, :url => post_path(@post) do |n|  %>
 
 <%= render :partial => 'form', :locals => { :n => n } %>
 

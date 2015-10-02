@@ -4,9 +4,34 @@ class PostsController < ApplicationController
 
   def index
     @posts = Post.all
+    # sort by comments
+    if (params[:order] == 'comments')
+      @posts = Post.order('comcount DESC' )
+    # sort by views
+    elsif (params[:order] == 'views')
+      @posts = Post.order('view DESC')
+    # sort by create_time
+    elsif (params[:order] == 'createtime')
+      @posts = Post.order('created_at DESC')
+    # sort by last_comment_time
+    elsif (params[:order] == 'last_comment_time')
+      @posts = Post.order('last_comment_time DESC')
+    elsif (params[:order] == 'category')
+      @posts = Post.order('category_id')
+    elsif (params[:where] == 'category_pub')
+      @posts = Post.where(category_id:1)
+    elsif (params[:where] == 'category_club')
+      @posts = Post.where(category_id:2)
+    elsif (params[:where] == 'category_event')
+      @posts = Post.where(category_id:3)
+    end
   end
 
   def show
+    @comment =  Comment.new( :post => @post ) #@comment = @post.comments.new
+    @post_comments = @post.comments
+    @post.view +=1
+    @post.save
   end
 
   def new
@@ -15,6 +40,7 @@ class PostsController < ApplicationController
 
   def create
     @post = Post.new( post_params )
+    @post.user_id = current_user.id
     
     if @post.save
       flash[:notice] = "Post was successfully created!"
@@ -41,12 +67,14 @@ class PostsController < ApplicationController
     redirect_to :action => :index
   end
 
-
+  def about
+    render "about"
+  end
 
   private
 
   def post_params
-    params.require(:post).permit(:title, :content)
+    params.require(:post).permit(:title, :content, :category_id)
   end
 
   def set_post

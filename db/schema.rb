@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150930041029) do
+ActiveRecord::Schema.define(version: 20151002021109) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -75,12 +75,14 @@ ActiveRecord::Schema.define(version: 20150930041029) do
   create_table "posts", force: :cascade do |t|
     t.string   "title"
     t.string   "content"
-    t.integer  "view",        default: 0, null: false
+    t.integer  "view",              default: 0, null: false
     t.integer  "status"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "user_id"
     t.integer  "category_id"
+    t.integer  "comcount",          default: 0, null: false
+    t.datetime "last_comment_time"
   end
 
   add_index "posts", ["category_id"], name: "index_posts_on_category_id"
@@ -95,7 +97,7 @@ ActiveRecord::Schema.define(version: 20150930041029) do
   create_table "users", force: :cascade do |t|
     t.string   "name"
     t.string   "about"
-    t.integer  "role"
+    t.integer  "role",                   default: 0,  null: false
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"

@@ -1,16 +1,70 @@
-<table class="table">
-  <tr>
-    <td>title:</td>
-    <td>
-      <%= @post.title %>
-    </td>
-  </tr>
-  <tr>
-    <td>Content:</td>
-    <td>
-      <%= @post.content %>
-    </td>
-  </tr>
-</table>
+<!-- show post -->
 
-<%= link_to "Back to home", posts_path, :class => "btn btn-info"  %>
+<div class="panel panel-primary">
+  <div class="panel-heading"><strong><%= @post.title %></strong></div>
+  <div class="panel-body"><%= @post.content %></div>
+  <div class="panel-footer">
+    <small>
+      create_by <strong><%= @post.user.name %></strong> at <%= @post.created_at %>
+    </small>
+  </div>
+</div>
+
+<!-- show post -->
+
+
+
+<!-- list comment -->
+
+<% @post_comments.each do |comment| %>
+
+  <div class="panel panel-info">
+    <div class="panel-heading"><strong><%= comment.title %></strong></div>
+    <div class="panel-body"><%= comment.content %></div>
+    <div class="panel-footer">
+      <small>
+        create_by <strong><%= comment.user.try(:name) %></strong> at <%= comment.created_at %>
+      </small>
+      <!-- 使用者登入才能編輯、刪除 -->
+      <% if current_user %>
+        <%= link_to 'Delete', post_comment_path(@post, comment), :method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-xs btn-danger pull-right" %>
+        <%= link_to "Edit", edit_post_comment_path(@post, comment), :class => "btn btn-xs btn-primary pull-right" %>
+      <% end %>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+<% end %>
+
+<!-- list comment -->
+
+
+
+<!-- comment area -->
+<!-- 使用者登入才能留言 -->
+<% if current_user %>
+
+  <%= form_for @comment, :url => post_comments_path(@post) do |c| %>
+
+    <div class="form-group">
+      <%= c.label :title, "Title" %>
+      <%= c.text_field :title, :class => "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= c.label :content, "Content" %>
+      <%= c.text_area :content, :class => "form-control" %>
+    </div>
+
+    <%= c.submit "Comment", :class => "btn btn-primary" %>
+    
+    <%= link_to "Back to index", posts_path, :class => "btn btn-info pull-right" %>
+    <div class="clearfix"></div>
+
+  <% end %>
+
+<% end %>
+<!-- comment area -->
+
+
+

@@ -7,21 +7,43 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+  
+  <!-- Flash message -->
   <% if flash[:notice].present? %>
     <div class="alert alert-success" role="alert">
       <%= flash[:notice] %>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
   <% end %>
-
   <% if flash[:alert].present? %>
     <div class="alert alert-danger" role="alert">
       <%= flash[:alert] %>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button> 
     </div>
   <% end %>
-  
-  <h1><%= link_to "Tipsy Forum", posts_path %></h1>
+  <!-- Flash message -->
 
+  <!-- user message -->
+  <div class="pull-right">
+    <% if current_user %>
+          <%= link_to('Log out', destroy_user_session_path, :method => :delete) %> |
+          <%= link_to('Edit', edit_registration_path(:user)) %> |
+      <% else %>
+          <%= link_to('Sign up', new_registration_path(:user)) %> |
+          <%= link_to('Log in', new_session_path(:user)) %> |
+      <% end %>
+      <%= link_to "about", about_path %>
+  </div>
+  
+  <!-- user message -->
+  <div class="pull-left">
+    <h1><%= link_to "Tipsy Forum", posts_path %></h1>
+  </div>
+  <div class="clearfix"></div>
 <%= yield %>
 
 </body>
