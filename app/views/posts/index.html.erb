@@ -86,10 +86,10 @@
       </td>
       <td><%= p.created_at %></td>
       <td>
-        <%#= link_to "Show", post_path(p), :class => "btn btn-info" %>
-        <!-- "有權限的"使用者登入才能編輯、刪除 -->
+        <%#= link_to "Show", post_path(p), :class => "btn btn-info btn-xs" %>
+        <!-- Owner or Admin can Edit, Delete -->
         <% if current_user %>
-          <% if current_user.id == p.user_id %>
+          <% if current_user.id == p.user_id or current_user.role == 1 %>
             <%= link_to "Edit", edit_post_path(p), :class => "btn btn-primary btn-xs" %>
             <%= link_to "Delete", post_path(p),:method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-danger btn-xs" %>
           <% end %>
@@ -103,7 +103,7 @@
 <%= paginate @posts, :theme => 'twitter-bootstrap-3', :pagination_class => "pagination-sm" %>
 <br>
 
-<!-- 使用者登入才能發文 -->
+<!-- Post need login -->
 <% if current_user %>
   <%= link_to "New Post", new_post_path, :class => "btn btn-success" %>
 <% else %>

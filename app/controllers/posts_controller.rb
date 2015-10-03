@@ -31,10 +31,15 @@ class PostsController < ApplicationController
   end
 
   def show
-    @comment =  Comment.new( :post => @post ) #@comment = @post.comments.new
-    @post_comments = @post.comments
-    @post.view +=1
-    @post.save
+
+    if @post.status == 1 # filter post status public
+      @comment =  Comment.new( :post => @post ) #@comment = @post.comments.new
+      # views count
+      @post_comments = @post.comments
+      @post.view +=1
+      @post.save
+    end
+
   end
 
   def new
@@ -56,7 +61,8 @@ class PostsController < ApplicationController
   end
 
   def edit
-    if @post.user_id == current_user.id
+    # Owner or Admin can edit
+    if @post.user_id == current_user.id or current_user.role == 1
     else
       flash[:alert] = "You are not author!!!"
       redirect_to :action => :index
@@ -74,14 +80,13 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    if @post.user_id == current_user.id
+    # Owner or Admini can delete post
+    if @post.user_id == current_user.id or current_user.role == 1
       @post.destroy
     else
       flash[:alert] = "You are not author!!!"
     end
-    
-
-    redirect_to :action => :back
+    redirect_to :action => :index
   end
 
   def about

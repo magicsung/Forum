@@ -26,6 +26,7 @@ class CommentsController < ApplicationController
   end
 
   def edit
+    # Owner can edit comment
     if @comment.user_id == current_user.id
     else
       flash[:alert] = "You are not author!!!"
@@ -39,14 +40,17 @@ class CommentsController < ApplicationController
     else
       flash[:alert] = "You are not author!!!"
     end
-
     redirect_to post_path( @post )    
   end
 
   def destroy
-    @comment.destroy
-    @post.comcount -= 1
-    @post.save
+    # Owner or Admin can delete comment
+    if @comment.user_id == current_user.id or current_user.role == 1
+      @comment.destroy
+      @post.comcount -= 1
+      @post.save
+      flash[:notice] = "Comment was deleted !!"
+    end
     redirect_to post_path( @post )
   end
 
