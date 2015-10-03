@@ -4,11 +4,13 @@
   <div class="panel-heading">
     <strong><%= @post.title %></strong>
     <!-- add to favorite -->
-    <% if current_user.favorites.find_by_post_id(@post) %>
-      <button class="btn btn-danger btn-xs pull-right disabled"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Favorite</button>
-    <% else %>
-      <%= link_to favorite_path(@post), :class => "btn btn-danger btn-xs pull-right" do%>
-        <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Favorite
+    <% if current_user %>
+      <% if current_user.favorites.find_by_post_id(@post) %>
+        <button class="btn btn-danger btn-xs pull-right disabled"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Favorite</button>
+      <% else %>
+        <%= link_to favorite_path(@post), :class => "btn btn-danger btn-xs pull-right" do%>
+          <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Favorite
+        <% end %>
       <% end %>
     <% end %>
   </div>
