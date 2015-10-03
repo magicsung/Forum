@@ -12,6 +12,11 @@ Rails.application.routes.draw do
     resources :comments
   end
 
+  namespace :admin do
+    resources :posts
+    resources :users
+    resources :category
+  end
 
 
   #get 'posts/:id' => 'posts#view_count'

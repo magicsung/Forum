@@ -17,4 +17,10 @@ class User < ActiveRecord::Base
   has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
   has_many :inverse_friends, :through => :inverse_friendships, :source => :user
 
+  ROLE = { "User" => 0, "Admin" => 1 }
+
+  def role_name
+    ROLE[ self.role ]
+  end
+
 end
