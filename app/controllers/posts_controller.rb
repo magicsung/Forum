@@ -111,7 +111,7 @@ class PostsController < ApplicationController
   private
 
   def pages
-    Post.page(params[:page]).per(10).where(status:1) # status_public
+    Post.page(params[:page]).per(10).where(status:1) # filter post_status_public
   end
 
   def post_params

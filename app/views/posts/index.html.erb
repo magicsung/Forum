@@ -63,6 +63,7 @@
       <td><%= link_to p.title, post_path(p) %></td>
       <td><%= p.comcount %></td>
       <td>
+        <!-- list comment user in this post -->
         <% b = p.comments.map do |x|  x.user.name  end %>
         <% b.uniq.map do |y| %>
           <%= y %>
