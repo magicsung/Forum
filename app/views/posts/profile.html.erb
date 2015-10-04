@@ -16,12 +16,22 @@
             <th>Content</th>
             <th>Time</th>
           </tr>
-          <% @user.favorites.each do |f| %>
+          <% if @user.favorites.size == 0 %>
             <tr>
-              <td><%= link_to f.post.title, post_path(f.post) %></td>
-              <td><%= f.post.content %></td>
-              <td><%= f.created_at %></td> 
+              <td>
+                <i>No favorites post yet!</i>
+              </td>
+              <td></td>
+              <td></td>
             </tr>
+          <% else %>
+            <% @user.favorites.each do |f| %>
+              <tr>
+                <td><%= link_to f.post.title, post_path(f.post) %></td>
+                <td><%= f.post.content %></td>
+                <td><%= f.created_at %></td> 
+              </tr>
+            <% end %>
           <% end %>
         </table>
       </div>
@@ -34,22 +44,31 @@
             <th>Content</th>
             <th></th>
           </tr>
-          <% @user.posts.where(status:2).map do |x| %>
-            <tr>
+            <% if @user.posts.where(status:2).size == 0 %>
               <td>
-                <%= x.category.name %>
+                <i>No draft post yet!</i>
               </td>
-              <td>
-                <%= link_to x.title, edit_post_path(x.id) %>
-              </td>
-              <td>
-                <%= x.content %>
-              </td>
-              <td>
-                <%= link_to "Edit", edit_post_path(x.id), :class => "btn btn-primary btn-xs" %>
-              </td>
-            </tr>
-          <% end %>
+              <td></td>
+              <td></td>
+              <td></td>
+            <% else %>
+              <% @user.posts.where(status:2).map do |x| %>
+                <tr>
+                  <td>
+                    <%= x.category.name %>
+                  </td>
+                  <td>
+                    <%= link_to x.title, edit_post_path(x.id) %>
+                  </td>
+                  <td>
+                    <%= x.content %>
+                  </td>
+                  <td>
+                    <%= link_to "Edit", edit_post_path(x.id), :class => "btn btn-primary btn-xs" %>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
         </table>
       </div>
       <div class="col-md-4">
@@ -61,28 +80,38 @@
             <th>Content</th>
             <th></th>
           </tr>
-          <% @user.comments.where(status:2).map do |x| %>
-            <tr>
+            <% if @user.comments.where(status:2).size == 0 %>
               <td>
-                <%= x.post.category.name %>
+                <i>No draft comment yet!</i>
               </td>
-              <td>
-                <%= link_to x.title, edit_post_comment_path(x.post.id, x.id) %>
-              </td>
-              <td>
-                <%= x.content %>
-              </td>
-              <td>
-                <%= link_to "Edit", edit_post_comment_path(x.post.id, x.id), :class => "btn btn-primary btn-xs" %>
-              </td>
-            </tr>
-          <% end %>
+              <td></td>
+              <td></td>
+              <td></td>
+            <% else %>
+              <% @user.comments.where(status:2).map do |x| %>
+                <tr>
+                  <td>
+                    <%= x.post.category.name %>
+                  </td>
+                  <td>
+                    <%= link_to x.title, edit_post_comment_path(x.post.id, x.id) %>
+                  </td>
+                  <td>
+                    <%= x.content %>
+                  </td>
+                  <td>
+                    <%= link_to "Edit", edit_post_comment_path(x.post.id, x.id), :class => "btn btn-primary btn-xs" %>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
         </table>
       </div>
     </div>
   <% end %>
 <% end %>
 
+<!-- Show post & comment log -->
 <div class="row">
   <div class="col-md-6">
     <h3>Post log</h3>
@@ -92,15 +121,21 @@
         <th>Content</th>
         <th>Time</th>
       </tr>
-      <% @user.posts.where(status:1).each do |z| %>
+      <% if @user.posts.where(status:1).size == 0 %>
         <tr>
-          <td>
-            <%= link_to z.title, post_path(z) %>
-          </td>
-          <td><%= z.content %></td>
-          <td><%= z.created_at %></td> 
+          <td><i><%= @user.name %> don't have any post!</i></td>
+          <td></td>
+          <td></td>
         </tr>
-      <% end %>
+      <% else %>
+        <% @user.posts.where(status:1).each do |z| %>
+          <tr>
+            <td><%= link_to z.title, post_path(z) %></td>
+            <td><%= z.content %></td>
+            <td><%= z.created_at %></td> 
+          </tr>
+        <% end %>
+      <% end %> 
     </table>
   </div>
   <div class="col-md-6">
@@ -112,14 +147,25 @@
         <th>Content</th>
         <th>Time</th>
       </tr>
-      <% @user.comments.where(status:1).each do |y| %>
+      <% if @user.comments.where(status:1).size == 0 %>
         <tr>
+          <td>
+            <i><%= @user.name %> don't have any post!</i>  
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      <% else %>
+        <% @user.comments.where(status:1).each do |y| %>
+          <tr>
           <td><%= link_to y.post.title, post_path(y.post) %></td>
           <td><%= y.title %></td>
           <td><%= y.content %></td>
           <td><%= y.created_at %></td> 
-        </tr>
-      <% end %>
+          </tr>
+        <% end %>
+      <% end %> 
     </table>
   </div>
 </div>

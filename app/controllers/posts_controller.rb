@@ -13,19 +13,34 @@ class PostsController < ApplicationController
       @posts = pages.order('view DESC')
     # sort by create_time
     elsif (params[:order] == 'createtime')
-      @posts = pages.order('created_at DESC')
+      @posts = pages.order('created_at ASC')
     # sort by last_comment_time
     elsif (params[:order] == 'last_comment_time')
       @posts = pages.order('last_comment_time DESC')
     # sort by category
     elsif (params[:order] == 'category')
-      @posts = pages.order('category_id')  
+      @posts = pages.order('category_id')
+    else
+      @posts = pages.order('created_at DESC')
     end
 
-    # filter
+    # Category filter
     Category.all.map do |x| 
-      if (params[:where] == 'category_'+x.name)
-        @posts = pages.where(category_id:x.id)
+      if (params[:where] == x.name)
+        # filter & sort 
+        if (params[:order] == 'comments')
+          @posts = pages.where(category_id:x.id).order('comcount DESC')
+        elsif (params[:order] == 'views')
+          @posts = pages.where(category_id:x.id).order('view DESC')
+        elsif (params[:order] == 'createtime')
+          @posts = pages.where(category_id:x.id).order('created_at ASC')
+        elsif (params[:order] == 'last_comment_time')
+          @posts = pages.where(category_id:x.id).order('last_comment_time ASC')
+        elsif (params[:order] == 'category')
+          @posts = pages.where(category_id:x.id).order('category_id')  
+        else
+          @posts = pages.where(category_id:x.id).order('created_at DESC')
+        end
       end
     end 
   end
@@ -64,7 +79,7 @@ class PostsController < ApplicationController
     # Owner or Admin can edit
     if @post.user_id == current_user.id or current_user.role == 1
     else
-      flash[:alert] = "You are not author!!!"
+      flash[:alert] = "Permission denied!"
       redirect_to :action => :index
     end
   end
@@ -73,8 +88,9 @@ class PostsController < ApplicationController
     if @post.user_id == current_user.id
       @post.update( post_params )
       redirect_to :action => :index
+      flash[:notice] = "Post was updated!"
     else
-      flash[:alert] = "You are not author!!!"
+      flash[:alert] = "Permission denied!"
       redirect_to :action => :index
     end
   end
@@ -83,8 +99,9 @@ class PostsController < ApplicationController
     # Owner or Admini can delete post
     if @post.user_id == current_user.id or current_user.role == 1
       @post.destroy
+      flash[:notice] = "Post was deleted!"
     else
-      flash[:alert] = "You are not author!!!"
+      flash[:alert] = "Permission denied!"
     end
     redirect_to :action => :index
   end

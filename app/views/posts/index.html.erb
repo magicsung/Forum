@@ -12,7 +12,7 @@
     <li role="separator" class="divider"></li>
     <% Category.all.map do |x| %>
       <li>
-        <%= link_to x.name, posts_path( :where => "category_#{x.name}" ) %>
+        <%= link_to x.name, posts_path( :where => "#{x.name}" ) %>
       </li>
     <% end %>
   </ul>
@@ -26,14 +26,26 @@
 <!-- List post -->
 <table class="table table-striped table-hover">
   <tr class="info">
+    <th></th>
     <th>
-      <%= link_to posts_path( :order => "category" ) do %> 
-        Category <i class="caret"></i>
+      <!-- sort by category -->
+      <% if cat = params[:where] %>
+        Category
+      <% else %>
+        <%= link_to posts_path( :order => "category" ) do %>
+          Comments <i class="caret"></i>
+        <% end %>
       <% end %>
     </th>
     <th><p>Title</p></th>
     <th>
-      <%= link_to posts_path( :order => "comments" ) do %>
+      <!-- sort by comments -->
+      <% if cat = params[:where] %>
+        <% filter_sort = posts_path(:where => cat, :order => "comments") %>
+      <% else %>
+        <% filter_sort = posts_path(:order => "comments") %>
+      <% end %>
+      <%= link_to filter_sort  do %> 
         Comments <i class="caret"></i>
       <% end %>
     </th>
@@ -41,18 +53,36 @@
       comment_user
     </th>
     <th>
-      <%= link_to posts_path( :order => "last_comment_time" ) do %>
-        last_comment_time <i class="caret"></i>
+      <!-- sort by last_comment_time -->
+      <% if cat = params[:where] %>
+        <% filter_sort = posts_path(:where => cat, :order => "last_comment_time") %>
+      <% else %>
+        <% filter_sort = posts_path(:order => "last_comment_time") %>
+      <% end %>
+      <%= link_to filter_sort  do %> 
+        Last_comment_time <i class="caret"></i>
       <% end %>
     </th>
     <th>
-      <%= link_to posts_path( :order => "views" ) do %>
+      <!-- sor by views -->
+      <% if cat = params[:where] %>
+        <% filter_sort = posts_path(:where => cat, :order => "views") %>
+      <% else %>
+        <% filter_sort = posts_path(:order => "views") %>
+      <% end %>
+      <%= link_to filter_sort  do %> 
         Views <i class="caret"></i>
       <% end %>
     </th>
     <th><p>Created by</p></th>
     <th>
-      <%= link_to posts_path( :order => "createtime" ) do %>
+      <!-- sort by post_created_time -->
+      <% if cat = params[:where] %>
+        <% filter_sort = posts_path(:where => cat, :order => "createtime") %>
+      <% else %>
+        <% filter_sort = posts_path(:order => "createtime") %>
+      <% end %>
+      <%= link_to filter_sort  do %> 
         Created_at <i class="caret"></i>
       <% end %>
     </th>
@@ -60,6 +90,13 @@
   </tr>
   <% @posts.each do |p| %>
     <tr>
+      <td>
+        <% if current_user %>
+          <% if current_user.role == 1 %>
+            <!-- <input type="checkbox" name="post" value="<%=p.id%>" > -->
+          <% end %>
+        <% end %>
+      </td>
       <td><%= p.category.try(:name) %></td>
       <td><%= link_to p.title, post_path(p) %></td>
       <td><%= p.comcount %></td>
@@ -86,12 +123,14 @@
       </td>
       <td><%= p.created_at %></td>
       <td>
-        <%#= link_to "Show", post_path(p), :class => "btn btn-info btn-xs" %>
-        <!-- Owner or Admin can Edit, Delete -->
+        <!-- Owner or Admin can Delete, only Owner can edit. -->
         <% if current_user %>
-          <% if current_user.id == p.user_id or current_user.role == 1 %>
+          <% if current_user.id == p.user_id %>
             <%= link_to "Edit", edit_post_path(p), :class => "btn btn-primary btn-xs" %>
-            <%= link_to "Delete", post_path(p),:method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-danger btn-xs" %>
+          <% end %>
+          <% if current_user.id == p.user_id or current_user.role == 1 %>
+            <%= link_to "Delete", post_path(p),:method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-danger btn-xs pull-right" %>
+            <div class="clearfix"></div>
           <% end %>
         <% end %>
       </td>

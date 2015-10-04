@@ -8,7 +8,6 @@ class CommentsController < ApplicationController
   end
 
   def create
-
     @comment = @post.comments.new( comment_params )
     if @comment.save
       # comment count
@@ -21,7 +20,9 @@ class CommentsController < ApplicationController
       @comment.save
       redirect_to post_path( @post )
     else
-      render :action => :new
+      flash[:alert] = "Please enter something!"
+      redirect_to post_path( @post )
+      # render "posts/show"
     end
   end
 
@@ -29,7 +30,7 @@ class CommentsController < ApplicationController
     # Owner can edit comment
     if @comment.user_id == current_user.id
     else
-      flash[:alert] = "You are not author!!!"
+      flash[:alert] = "Permission denied!"
       redirect_to :back
     end
   end
@@ -38,7 +39,7 @@ class CommentsController < ApplicationController
     if @comment.user_id == current_user.id
       @comment.update( comment_params )
     else
-      flash[:alert] = "You are not author!!!"
+      flash[:alert] = "Permission denied!"
     end
     redirect_to post_path( @post )    
   end
@@ -50,6 +51,8 @@ class CommentsController < ApplicationController
       @post.comcount -= 1
       @post.save
       flash[:notice] = "Comment was deleted !!"
+    else
+      flash[:alert] = "Permission denied!"
     end
     redirect_to post_path( @post )
   end
