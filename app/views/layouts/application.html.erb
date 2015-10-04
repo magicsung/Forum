@@ -38,7 +38,7 @@
     <% if current_user %>
         <span>Hi! </span>
         <%= link_to profile_path(current_user.id) do %>
-          <%= current_user.name %>
+          <strong><%= current_user.name %></strong>
         <% end %> |
         <%= link_to('Log out', destroy_user_session_path, :method => :delete) %> |
         <%= link_to('Edit', edit_registration_path(:user)) %> |
@@ -53,6 +53,7 @@
     <% end %>
   </div>
   <div class="clearfix"></div>
+  <div class="emptyarea30px"></div>
 
 
 <%= yield %>
@@ -64,6 +65,28 @@
     </div>
     <div class="clearfix"></div>
   </footer>
+
+  <!-- FB like button -->
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.4";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+  <!-- FB like button -->
+
+  <!-- FB share button -->
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.4";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+  <!-- FB share button -->
 
 </body>
 </html>

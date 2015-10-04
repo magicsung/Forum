@@ -1,5 +1,11 @@
-<!-- show post -->
 
+<!-- FB Like button -->
+<div class="fb-like pull-left"></div>
+<!-- FB share button -->
+<div class="fb-share-button pull-right" data-href="https://localhost:3000/<%=post_path%>" data-layout="button"></div>
+<div class="clearfix"></div>
+
+<!-- show post -->
 <div class="panel panel-primary">
   <div class="panel-heading">
     <strong><%= @post.title %></strong>
@@ -15,14 +21,15 @@
     <% end %>
   </div>
   <div class="clearfix"></div>
-  <div class="panel-body"><%= @post.content %></div>
+  <div class="panel-body">
+    <%= @post.content %> <br>
+  </div>
   <div class="panel-footer">
     <small>
       create_by <strong><%= @post.user.name %></strong> at <%= @post.created_at %>
     </small>
   </div>
 </div>
-
 <!-- show post -->
 
 

@@ -4,13 +4,15 @@
 
 <div class="row">
   <!-- Users List -->
-  <div class="col-md-6">
+  <div class="col-md-7">
     <h3>User List</h3>
     <table class="table table-striped table-hover">
       <tr class="info">
         <th>ID</th>
         <th>Role</th>
         <th>User name</th>
+        <th>Posts</th>
+        <th>Comments</th>
         <th>Email</th>
         <th></th>
       </tr>
@@ -32,6 +34,8 @@
               <%= x.name %>
             <% end %>
           </td>
+          <td><%= x.posts.size %></td>
+          <td><%= x.comments.size %></td>
           <td><%= x.email %></td>
           <td>
             <%= link_to 'Edit', edit_admin_user_path(x), :class => "btn btn-warning btn-xs" %>
@@ -42,7 +46,7 @@
     </table>
   </div>
   <!-- Category List -->
-  <div class="col-md-6">
+  <div class="col-md-5">
     <h3>Category List</h3>
     <table class="table table-striped table-hover">
       <tr class="danger">
