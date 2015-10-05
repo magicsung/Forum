@@ -6,11 +6,11 @@ class Post < ActiveRecord::Base
     STATUS[ self.status ]
   end
 
-  has_many :likes
-  has_many :favorites
+  has_many :likes, :dependent => :destroy
+  has_many :favorites, :dependent => :destroy
   has_many :comments, :dependent => :destroy
-  has_many :post_tagships
-  has_many :tags, :through => :post_tagships
+  has_many :post_tagships, :dependent => :destroy
+  has_many :tags, :through => :post_tagships, :dependent => :destroy
 
   belongs_to :user
   belongs_to :category
