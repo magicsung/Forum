@@ -30,7 +30,13 @@
   <div class="panel-footer">
     <small>
       create_by <strong><%= @post.user.name %></strong> at <%= @post.created_at %>
+      <% if current_user %>
+        <% if current_user.id == @post.user_id %>
+          <%= link_to "Edit", edit_post_path(@post), :class => "btn btn-primary btn-xs pull-right" %>
+        <% end %>
+      <% end %>
     </small>
+    <div class="clearfix"></div>
   </div>
 </div>
 <!-- show post -->
