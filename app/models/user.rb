@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
 
   validates_presence_of :name
 
+  devise :omniauthable, :omniauth_providers => [:facebook]
+
   has_many :likes
   has_many :favorites
   has_many :posts
