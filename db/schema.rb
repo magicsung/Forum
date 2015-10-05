@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151005010919) do
+ActiveRecord::Schema.define(version: 20151005025258) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -75,14 +75,18 @@ ActiveRecord::Schema.define(version: 20151005010919) do
   create_table "posts", force: :cascade do |t|
     t.string   "title"
     t.string   "content"
-    t.integer  "view",              default: 0, null: false
+    t.integer  "view",                     default: 0, null: false
     t.integer  "status"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.integer  "user_id"
     t.integer  "category_id"
-    t.integer  "comcount",          default: 0, null: false
+    t.integer  "comcount",                 default: 0, null: false
     t.datetime "last_comment_time"
+    t.string   "upload_file_file_name"
+    t.string   "upload_file_content_type"
+    t.integer  "upload_file_file_size"
+    t.datetime "upload_file_updated_at"
   end
 
   add_index "posts", ["category_id"], name: "index_posts_on_category_id"
@@ -112,11 +116,14 @@ ActiveRecord::Schema.define(version: 20151005010919) do
     t.datetime "updated_at",                          null: false
     t.string   "provider"
     t.string   "uid"
+    t.string   "token"
+    t.string   "imgae"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["provider"], name: "index_users_on_provider"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["token"], name: "index_users_on_token"
   add_index "users", ["uid"], name: "index_users_on_uid"
 
 end

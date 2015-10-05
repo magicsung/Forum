@@ -4,7 +4,6 @@ class PostsController < ApplicationController
 
   def index
     @posts = pages
-
     # sort by comments
     if (params[:order] == 'comments')
       @posts = pages.order('comcount DESC')
@@ -85,6 +84,11 @@ class PostsController < ApplicationController
   end
 
   def update
+
+    if params[:destroy_file] == "1"
+      @post.upload_file = nil
+    end
+
     if @post.user_id == current_user.id
       @post.update( post_params )
       redirect_to :action => :index
@@ -137,7 +141,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :content, :category_id, :status)
+    params.require(:post).permit(:title, :content, :category_id, :status, :upload_file)
   end
 
   def set_post

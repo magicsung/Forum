@@ -23,6 +23,9 @@
   <div class="clearfix"></div>
   <div class="panel-body">
     <%= @post.content %> <br>
+    <% if @post.upload_file.exists? %>
+      <%= link_to image_tag(@post.upload_file.url(:medium)), @post.upload_file.url %>
+    <% end %>
   </div>
   <div class="panel-footer">
     <small>

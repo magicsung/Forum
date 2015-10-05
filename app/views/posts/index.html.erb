@@ -98,7 +98,13 @@
         <% end %>
       </td>
       <td><%= p.category.try(:name) %></td>
-      <td><%= link_to p.title, post_path(p) %></td>
+      <td>
+        <%= link_to p.title, post_path(p) %>
+        <!-- if post has picture -->
+        <% if p.upload_file.exists? %>
+          <i class="glyphicon glyphicon-picture"></i>
+        <% end %>
+      </td>
       <td><%= p.comcount %></td>
       <td>
         <!-- list comment user in this post -->
