@@ -15,12 +15,14 @@
             <th>Post</th>
             <th>Content</th>
             <th>Time</th>
+            <th></th>
           </tr>
           <% if @user.favorites.size == 0 %>
             <tr>
               <td>
                 <i>No favorites post yet!</i>
               </td>
+              <td></td>
               <td></td>
               <td></td>
             </tr>
@@ -30,6 +32,9 @@
                 <td><%= link_to f.post.title, post_path(f.post) %></td>
                 <td><%= f.post.content %></td>
                 <td><%= f.created_at %></td> 
+                <td>
+                  <%= link_to "Delete", favorite_path(f.post.id), :class => "btn btn-danger btn-xs" %>
+                </td>
               </tr>
             <% end %>
           <% end %>

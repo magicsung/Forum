@@ -120,8 +120,9 @@ class PostsController < ApplicationController
   end
 
   def favorite
-    if current_user.favorites.find_by_post_id(@post)
-      flash[:alert] = "Aleardy added!!!"
+    if a = current_user.favorites.find_by_post_id(params[:id])
+      a.destroy
+      flash[:notice] = "Aleardy deleted!"
     else
       @post = Post.find(params[:id])
       @fav = Favorite.new
