@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get 'favorite/:id' => "posts#favorite", as: 'favorite'
   get 'profile/:id' => "posts#profile", as: 'profile'
   
-  devise_for :users
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   resources :posts do
     resources :comments

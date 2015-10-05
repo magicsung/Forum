@@ -39,12 +39,17 @@
         <span>Hi! </span>
         <%= link_to profile_path(current_user.id) do %>
           <strong><%= current_user.name %></strong>
+          <!-- show user's image -->
+          <% if current_user.image? %>
+            <%= image_tag((current_user.image), :style => "width: 15px") %>
+          <% end %>
         <% end %> |
         <%= link_to('Log out', destroy_user_session_path, :method => :delete) %> |
         <%= link_to('Edit', edit_registration_path(:user)) %> |
       <% else %>
         <%= link_to('Sign up', new_registration_path(:user)) %> |
         <%= link_to('Log in', new_session_path(:user)) %> |
+        <%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %> |
       <% end %>
     <% if current_user %>
       <% if current_user.role == 1 %>
