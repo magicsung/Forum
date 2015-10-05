@@ -102,7 +102,9 @@
         <%= link_to p.title, post_path(p) %>
         <!-- if post has picture -->
         <% if p.upload_file.exists? %>
+          <%= link_to p.upload_file.url do %> 
           <i class="glyphicon glyphicon-picture"></i>
+          <% end %>
         <% end %>
       </td>
       <td><%= p.comcount %></td>
