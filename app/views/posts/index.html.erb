@@ -114,7 +114,7 @@
         <%= link_to post_path(p) do %>
           <!-- if post has picture -->
           <% if p.upload_file.exists? %>
-            <i class="glyphicon glyphicon-picture" data-toggle="popover" data-content='<img src="<%= p.upload_file.url(:medium) %>">'><%= p.title %></i>
+            <i class="glyphicon glyphicon-picture" data-container="body" data-toggle="popover" data-content='<img src="<%= p.upload_file.url(:medium) %>">'><%= p.title %></i>
           
           <% else %>
             <%= p.title %>
