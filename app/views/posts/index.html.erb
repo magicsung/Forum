@@ -12,8 +12,11 @@
     <li role="separator" class="divider"></li>
     <% Category.all.map do |x| %>
       <li>
-        <%= link_to x.name, posts_path( :where => "#{x.name}" ) %>
+        <%= link_to posts_path( :where => "#{x.name}" ) do %> 
+        <%= x.name %> <span class="badge pull-right"><%= x.posts.size %></span>
+        <% end %>
       </li>
+      <li class="clearfix"></li>
     <% end %>
   </ul>
 </div>
