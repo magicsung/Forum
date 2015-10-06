@@ -29,14 +29,12 @@
               </td>
               <td></td>
               <td></td>
-              <td></td>
             </tr>
           <% else %>
             <% @user.favorites.each do |f| %>
               <tr>
                 <td><%= link_to f.post.title, post_path(f.post) %></td>
                 <td><%= f.post.content %></td>
-                <td><%= f.created_at %></td> 
                 <td>
                   <%= link_to "Delete", favorite_path(f.post.id), :class => "btn btn-danger btn-xs" %>
                 </td>
