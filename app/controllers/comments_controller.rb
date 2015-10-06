@@ -8,22 +8,34 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @comment = @post.comments.new( comment_params )
-    if @comment.save
-      # comment count
-      @post.comcount += 1
-      # update comment_time to post
-      @post.last_comment_time = @comment.created_at
-      # who creat comment
-      @comment.user_id = current_user.id
-      @post.save
-      @comment.save
-      redirect_to post_path( @post )
-    else
-      flash[:alert] = "Please enter something!"
-      redirect_to post_path( @post )
-      # render "posts/show"
+  @comment = @post.comments.new( comment_params )
+  if @comment.save
+    # comment count
+    @post.comcount += 1
+    # update comment_time to post
+    @post.last_comment_time = @comment.created_at
+    # who creat comment
+    @comment.user_id = current_user.id
+    @post.save
+    @comment.save
+
+    respond_to do |format|
+      format.html
+      format.js
     end
+
+  else
+    
+  end
+
+    # if @comment.save
+    #   redirect_to post_path( @post )
+    # else
+    #   flash[:alert] = "Please enter something!"
+    #   redirect_to post_path( @post )
+    #   # render "posts/show"
+    # end
+
   end
 
   def edit
@@ -37,7 +49,6 @@ class CommentsController < ApplicationController
 
   def update
     if @comment.user_id == current_user.id
-      @comment.update( comment_params )
     else
       flash[:alert] = "Permission denied!"
     end
@@ -45,16 +56,18 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+
     # Owner or Admin can delete comment
     if @comment.user_id == current_user.id or current_user.role == 1
+      respond_to do |format|
+        format.html
+        format.js
+      end
       @comment.destroy
       @post.comcount -= 1
       @post.save
-      flash[:notice] = "Comment was deleted !!"
-    else
-      flash[:alert] = "Permission denied!"
     end
-    redirect_to post_path( @post )
+
   end
 
 

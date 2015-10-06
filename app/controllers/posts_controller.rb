@@ -109,12 +109,13 @@ class PostsController < ApplicationController
   def destroy
     # Owner or Admini can delete post
     if @post.user_id == current_user.id or current_user.role == 1
+      respond_to do |format|
+        format.html
+        format.js
+      end
       @post.destroy
-      flash[:notice] = "Post was deleted!"
-    else
-      flash[:alert] = "Permission denied!"
     end
-    redirect_to :action => :index
+
   end
 
   def about

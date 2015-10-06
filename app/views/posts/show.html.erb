@@ -99,7 +99,7 @@
 <!-- filter comment_status_public -->
 <% @post_comments.where(status:1).each do |comment| %>
 
-  <div class="panel panel-info">
+  <div id="comment<%=comment.id%>" class="panel panel-info">
     <div class="panel-heading"><strong><%= comment.title %></strong></div>
     <div class="panel-body"><%= comment.content %></div>
     <div class="panel-footer">
@@ -109,7 +109,7 @@
       <!-- Owner and Admin can edit, delete. -->
       <% if current_user %>
         <% if current_user.id == comment.user_id or current_user.role == 1 %>
-          <%= link_to post_comment_path(@post, comment), :method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-xs pull-right" do %>
+          <%= link_to post_comment_path(@post, comment), :method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-xs pull-right", remote: true do %>
             <i class="glyphicon glyphicon-trash"></i>
           <% end %>
           <!-- Only Owner can delete -->
@@ -134,7 +134,7 @@
 <!-- comment need login -->
 <% if current_user %>
 
-  <%= form_for @comment, :url => post_comments_path(@post) do |c| %>
+  <%= form_for @comment, :url => post_comments_path(@post), remote: true do |c| %>
 
     <div class="form-group">
       <%= c.label :title, "Title" %>
