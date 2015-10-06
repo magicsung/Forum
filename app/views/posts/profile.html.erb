@@ -1,4 +1,9 @@
-<h2><%= @user.name %> 's profile</h2>
+<h2>
+<% if @user.image? %>
+  <%= image_tag(@user.image) %> 
+<% end %>
+<%= @user.name %> 's profile
+</h2>
 
 <p>
   <%= @user.about %>
