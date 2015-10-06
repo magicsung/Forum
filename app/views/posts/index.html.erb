@@ -1,26 +1,51 @@
 
-<!-- Category filter -->
-<div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    Category filter
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    <li>
-      <%= link_to "All", posts_path %>
-    </li>
-    <li role="separator" class="divider"></li>
-    <% Category.all.map do |x| %>
-      <li>
-        <%= link_to posts_path( :where => "#{x.name}" ) do %> 
-        <%= x.name %> <span class="badge pull-right"><%= x.posts.size %></span>
-        <% end %>
-      </li>
-      <li class="clearfix"></li>
-    <% end %>
-  </ul>
-</div>
 
+<div class="btn-group" role="group">
+<div class="btn-group" role="group">
+  <!-- Category filter -->
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      Category filter
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+      <li>
+        <%= link_to "All", posts_path %>
+      </li>
+      <li role="separator" class="divider"></li>
+      <% Category.all.map do |x| %>
+        <li>
+          <%= link_to posts_path( :where => "#{x.name}" ) do %> 
+          <%= x.name %> <span class="badge pull-right"><%= x.posts.size %></span>
+          <% end %>
+        </li>
+        <li class="clearfix"></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+<div class="btn-group" role="group">
+  <!-- Tag filter -->
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      Tag filter
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+      <% Tag.all.map do |x| %>
+        <li>
+          <%= link_to posts_path( :where => "tag_#{x.name}" ) do %> 
+          <%= x.name %> <span class="badge pull-right"><%= x.posts.size %></span>
+          <% end %>
+        </li>
+        <li class="clearfix"></li>
+      <% end %>
+    </ul>
+  </div>
+  </div>
+
+</div>
+<br>
 
 <!-- pages -->
 <%= paginate @posts, :theme => 'twitter-bootstrap-3', :pagination_class => "pagination-sm" %>

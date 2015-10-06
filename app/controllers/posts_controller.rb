@@ -23,6 +23,13 @@ class PostsController < ApplicationController
       @posts = pages.order('created_at DESC')
     end
 
+    # Tag filter
+    Tag.all.map do |x| 
+      if (params[:where] == "tag_"+x.name)
+        @posts = x.posts.page(params[:page]).per(10).where(status:1).order('created_at DESC')
+      end
+    end
+
     # Category filter
     Category.all.map do |x| 
       if (params[:where] == x.name)
