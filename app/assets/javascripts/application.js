@@ -16,12 +16,12 @@
 //= require bootstrap-sprockets
 //= require_tree .
 
-var pop = $(function () {
-    $('[data-toggle="popover"]').popover({
+$(document).on('page:change', function(){
+  $('[data-toggle="popover"]').popover({
       html: true,
       trigger: 'hover'
-    });
   });
 
-$(document).ready(ready);
-$(document).on('page:load', pop);
+
+
+});
