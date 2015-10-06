@@ -27,13 +27,14 @@
 <table class="table table-striped table-hover">
   <tr class="info">
     <th></th>
+    <th>Tag</th>
     <th>
       <!-- sort by category -->
       <% if cat = params[:where] %>
         Category
       <% else %>
         <%= link_to posts_path( :order => "category" ) do %>
-          Comments <i class="caret"></i>
+          Category <i class="caret"></i>
         <% end %>
       <% end %>
     </th>
@@ -97,6 +98,14 @@
           <% end %>
         <% end %>
       </td>
+      <td>
+        <!-- Show tag -->
+        <% unless p.tags.size==0 %>
+          <% p.tags.map do |x| %>
+           <%= x.name %>
+          <% end %>
+        <% end %>
+      </td>
       <td><%= p.category.try(:name) %></td>
       <td>
         <%= link_to p.title, post_path(p) %>
@@ -117,9 +126,9 @@
       </td>
       <td>
         <% if p.try(:last_comment_time) %>
-          <%= p.try(:last_comment_time) %>
+          <small> <%= time_ago_in_words(p.last_comment_time) %> ago</small>
         <% else %>
-          no comment yet
+          <small><i>no comment yet</i></small>
         <% end %>
       </td>
       <td><%= p.view %></td>
@@ -129,7 +138,9 @@
           <%= p.user.try(:name) %>
         <% end %>
       </td>
-      <td><%= p.created_at %></td>
+      <td>
+        <small><%= time_ago_in_words(p.created_at) %> ago</small> 
+      </td>
       <td>
         <!-- Owner or Admin can Delete, only Owner can edit. -->
         <% if current_user %>

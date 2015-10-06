@@ -21,4 +21,21 @@ class Post < ActiveRecord::Base
                     default_url: "/images/:style/missing.png"
   validates_attachment_content_type :upload_file, content_type: /\Aimage\/.*\Z/
 
+  def tag_list
+    self.tags.map{ |t| t.name }.join(",")
+  end
+
+  def tag_list=(str)
+    arr = str.split(",")
+
+    self.tags = arr.map do |t|
+      tag = Tag.find_by_name(t)
+      unless tag
+        tag = Tag.create!( :name => t )
+      end
+      tag
+    end
+
+  end
+
 end
