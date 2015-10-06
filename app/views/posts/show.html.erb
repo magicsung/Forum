@@ -29,15 +29,29 @@
 <div class="panel panel-primary">
   <div class="panel-heading">
     <strong><%= @post.title %></strong>
-    <!-- add to favorite -->
+    <!-- Favorite -->
     <% if current_user %>
       <% if current_user.favorites.find_by_post_id(@post) %>
         <%= link_to favorite_path(@post), :class => "btn btn-danger btn-xs pull-right" do%>
-          <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> UnFavorite?
+          <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span> UnFavorite
         <% end %>
       <% else %>
         <%= link_to favorite_path(@post), :class => "btn btn-danger btn-xs pull-right" do%>
           <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Favorite
+        <% end %>
+      <% end %>
+    <% end %>
+    <!-- Like -->
+    <% if current_user %>
+      <% if current_user.likes.find_by_post_id(@post) %>
+        <%= link_to like_path(@post), :class => "btn btn-warning btn-xs pull-right" do%>
+          <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> UnLike
+          <span class="label label-warning label-as-badge"><%= @post.likes.size %></span>
+        <% end %>
+      <% else %>
+        <%= link_to like_path(@post), :class => "btn btn-warning btn-xs pull-right" do%>
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Like
+          <span class="label label-warning label-as-badge"><%= @post.likes.size %></span>
         <% end %>
       <% end %>
     <% end %>
@@ -48,7 +62,13 @@
     <% if @post.upload_file.exists? %>
       <%= link_to image_tag(@post.upload_file.url(:medium)), @post.upload_file.url %>
     <% end %>
-    <br><br><br>
+    <br><br>
+    <!-- Who like this post. -->
+    <p>These people also like this post:</p>
+    <% @post.likes.all.map do |x| %>
+    <small><i><%= x.user.name %></i></small>
+    <% end %>
+    <br><br>
     <!-- List tags -->
     <% unless @post.tags.size==0 %>
       Tags:

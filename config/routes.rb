@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   get 'about' => "posts#about"
   get 'favorite/:id' => "posts#favorite", as: 'favorite'
+  get 'like/:id' => "posts#like", as: 'like'
   get 'profile/:id' => "posts#profile", as: 'profile'
   
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
