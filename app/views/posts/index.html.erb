@@ -112,11 +112,12 @@
       <td><%= p.category.try(:name) %></td>
       <td>
         <%= link_to post_path(p) do %>
-        <%= p.title %>
-        <!-- if post has picture -->
+          <!-- if post has picture -->
           <% if p.upload_file.exists? %>
-          <i class="glyphicon glyphicon-picture" data-toggle="popover"
-             data-content='<img src="<%= p.upload_file.url(:medium) %>">'> </i>
+            <i class="glyphicon glyphicon-picture" data-toggle="popover" data-content='<img src="<%= p.upload_file.url(:medium) %>">'><%= p.title %></i>
+          
+          <% else %>
+            <%= p.title %>
           <% end %>
         <% end %>
       </td>

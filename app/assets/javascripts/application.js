@@ -15,10 +15,13 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require_tree .
+$( document ).ready(function() {
 
-$(function () {
-  $('[data-toggle="popover"]').popover({
-    html: true,
-    trigger: 'hover'
+  $(function () {
+    $('[data-toggle="popover"]').popover({
+      html: true,
+      trigger: 'hover'
+    })
   })
-})
+
+});  
