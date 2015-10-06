@@ -82,7 +82,9 @@
       create_by <strong><%= @post.user.name %></strong> at <%= @post.created_at %>
       <% if current_user %>
         <% if current_user.id == @post.user_id %>
-          <%= link_to "Edit", edit_post_path(@post), :class => "btn btn-primary btn-xs pull-right" %>
+          <%= link_to edit_post_path(@post), :class => "btn btn-xs pull-right" do %>
+            <i class="glyphicon glyphicon-pencil"></i>
+          <% end %>
         <% end %>
       <% end %>
     </small>
@@ -107,10 +109,14 @@
       <!-- Owner and Admin can edit, delete. -->
       <% if current_user %>
         <% if current_user.id == comment.user_id or current_user.role == 1 %>
-          <%= link_to 'Delete', post_comment_path(@post, comment), :method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-xs btn-danger pull-right" %>
+          <%= link_to post_comment_path(@post, comment), :method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-xs pull-right" do %>
+            <i class="glyphicon glyphicon-trash"></i>
+          <% end %>
           <!-- Only Owner can delete -->
           <% if current_user.id == comment.user_id %>
-          <%= link_to "Edit", edit_post_comment_path(@post, comment), :class => "btn btn-xs btn-primary pull-right" %>
+          <%= link_to edit_post_comment_path(@post, comment), :class => "btn btn-xs pull-right" do %>
+            <i class="glyphicon glyphicon-pencil"></i>
+          <% end %>
           <% end %>
         <% end %>
       <% end %>

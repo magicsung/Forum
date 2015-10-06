@@ -175,10 +175,14 @@
         <!-- Owner or Admin can Delete, only Owner can edit. -->
         <% if current_user %>
           <% if current_user.id == p.user_id %>
-            <%= link_to "Edit", edit_post_path(p), :class => "btn btn-primary btn-xs" %>
+            <%= link_to edit_post_path(p), :class => "btn btn-xs" do %>
+              <i class="glyphicon glyphicon-pencil"></i>
+            <% end %>
           <% end %>
           <% if current_user.id == p.user_id or current_user.role == 1 %>
-            <%= link_to "Delete", post_path(p),:method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-danger btn-xs pull-right" %>
+            <%= link_to post_path(p),:method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-xs pull-right" do %>
+              <i class="glyphicon glyphicon-trash"></i>
+            <% end %>
             <div class="clearfix"></div>
           <% end %>
         <% end %>
