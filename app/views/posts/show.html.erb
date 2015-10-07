@@ -24,20 +24,23 @@
     <strong><%= @post.title %></strong>
     <!-- Favorite -->
     <% if current_user %>
-      <% if current_user.favorites.find_by_post_id(@post) %>
-        <%= link_to favorite_post_path(@post), :class => "btn btn-danger btn-xs pull-right", :method => :post do%>
-          <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span> 
+        <%= link_to favorite_post_path(@post), 
+          :id => "favbutton", :class => "btn btn-danger btn-xs pull-right", remote: true, 
+          :method => :post, :"data-toggle"=>"popover", :"data-placement"=>"left", 
+          :"data-content"=>"<h6 class='text-center' style='color:black;'>Add to favorites.</h6>" do%>
+          <% if current_user.favorites.find_by_post_id(@post) %>
+            <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>     
+          <% else %>
+            <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 
+          <% end %>
         <% end %>
-      <% else %>
-        <%= link_to favorite_post_path(@post), :class => "btn btn-danger btn-xs pull-right", :method => :post do%>
-          <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 
-        <% end %>
-      <% end %>
     <% end %>
     <!-- Like -->
-
     <% if current_user %>
-        <%= link_to like_post_path(@post), :id => "likebutton", :class => "btn btn-warning btn-xs pull-right", remote: true, :method => :post do%>
+        <%= link_to like_post_path(@post), :id => "likebutton", 
+          :class => "btn btn-warning btn-xs pull-right", remote: true, :method => :post, 
+          :"data-toggle"=>"popover", :"data-placement"=>"left", 
+          :"data-content"=>"<h6 class='text-center' style='color:black;'>Like this post.</h6>" do%>
           
           <% if current_user.likes.find_by_post_id(@post) %>
             <span class="glyphicon glyphicon-star" aria-hidden="true"></span> 

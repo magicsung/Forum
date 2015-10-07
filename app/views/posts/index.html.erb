@@ -97,6 +97,9 @@
     <tr id="post<%=p.id%>">
       <td>
         <% if current_user %>
+          <% if current_user.favorites.find_by_post_id(p) %>
+            <span class="glyphicon glyphicon-bookmark" aria-hidden="true" style="color:#f66"></span>
+          <% end %>
           <% if current_user.role == 1 %>
             <!-- <input type="checkbox" name="post" value="<%=p.id%>" > -->
           <% end %>

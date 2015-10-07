@@ -1,0 +1,5 @@
+<% if @fav.persisted? %>
+  $("#favbutton").children('span').first().attr("class", "glyphicon glyphicon-heart-empty");
+<% else %>
+  $("#favbutton").children('span').first().attr("class", "glyphicon glyphicon-heart");
+<% end %>

@@ -3,6 +3,7 @@ class PostsController < ApplicationController
   before_action :authenticate_user!, :except => [:index, :show]
 
   before_action :set_post, :only => [ :edit, :update, :destroy ]
+  before_action :find_post, :only => [ :profile, :favorite, :like ]
 
   def index
     if params[:tag] 
@@ -91,26 +92,24 @@ class PostsController < ApplicationController
 
   # TODO: move to users_controller or profiles_controller
   def profile
-    @user = User.find(params[:id])
   end
 
   def favorite
-    @post = Post.find(params[:id])
 
     if @fav = current_user.favorites.find_by_post_id(@post.id)
       @fav.destroy
-      flash[:notice] = "Aleardy deleted!"
     else      
       @fav = Favorite.new( :post => @post, :user => current_user )
       @fav.save
-      flash[:notice] = "Added to favorite"
     end
 
-    redirect_to :back
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.js
+    end
   end
 
   def like
-    @post = Post.find(params[:id])
 
     if @like = current_user.likes.find_by_post_id(@post.id)
       @like.destroy
@@ -126,6 +125,10 @@ class PostsController < ApplicationController
   end
 
   private
+
+  def find_post
+    @post = Post.find(params[:id])  
+  end
 
   def post_params
     params.require(:post).permit(:title, :content, :category_id, :status, :upload_file, :tag_list)
