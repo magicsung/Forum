@@ -92,6 +92,7 @@ class PostsController < ApplicationController
 
   # TODO: move to users_controller or profiles_controller
   def profile
+    @user = User.find(params[:id])
   end
 
   def favorite
