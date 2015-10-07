@@ -25,7 +25,7 @@ class CommentsController < ApplicationController
   end
 
   def update
-    # TODO    
+    @comment.update(comment_params)
     redirect_to post_path( @post )    
   end
 
