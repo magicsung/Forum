@@ -143,16 +143,25 @@ class PostsController < ApplicationController
   end
 
   def like
-    if a = current_user.likes.find_by_post_id(params[:id])
-      a.destroy
+
+    @post = Post.find(params[:id])
+
+    if @a = current_user.likes.find_by_post_id(params[:id])
+      @a.destroy
+      @z = 1
     else
-      @post = Post.find(params[:id])
       @lik = Like.new
       @lik.post_id = @post.id
       @lik.user_id = current_user.id
       @lik.save
+      @z = 2
     end
-    redirect_to :back
+    
+    respond_to do |format|
+      format.html #{ redirect_to :back }
+      format.js
+    end
+
   end
 
 

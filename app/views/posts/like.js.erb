@@ -1,0 +1,7 @@
+<% if @z == 1 %>
+  $("#likebutton").children('span').first().attr("class", "glyphicon glyphicon-star-empty");
+<% elsif @z == 2 %>
+  $("#likebutton").children('span').first().attr("class", "glyphicon glyphicon-star");
+<% end %>
+
+$("#likebutton").children('span').last().text("<%= @post.likes.count %>");
