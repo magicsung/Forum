@@ -37,7 +37,7 @@
   <div class="pull-right">
     <% if current_user %>
         <span>Hi! </span>
-        <%= link_to profile_path(current_user.id) do %>
+        <%= link_to profile_path(current_user.name) do %>
           <strong><%= current_user.name %></strong>
           <!-- show user's image -->
           <% if current_user.image? %>

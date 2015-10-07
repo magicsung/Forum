@@ -129,7 +129,7 @@
       <td>
         <!-- list comment user in this post -->
         <% p.comment_users.each do |u| %>
-          <%= link_to u.name, profile_path(u) %>
+          <%= link_to u.name, profile_path(u.name) %>
         <% end %>
       </td>
       <td>
@@ -142,8 +142,8 @@
       <td><%= p.view %></td>
       <td>
         <!-- Link to user's profile -->
-        <%= link_to profile_path(p.user.id) do %>
-          <%= p.user.try(:name) %>
+        <%= link_to profile_path(p.user.name) do %>
+          <%= p.user.name %>
         <% end %>
       </td>
       <td>

@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   before_action :authenticate_user!, :except => [:index, :show]
 
   before_action :set_post, :only => [ :edit, :update, :destroy ]
-  before_action :find_post, :only => [ :profile, :favorite, :like ]
+  before_action :find_post, :only => [ :favorite, :like ]
 
   def index
     if params[:tag] 
@@ -92,7 +92,7 @@ class PostsController < ApplicationController
 
   # TODO: move to users_controller or profiles_controller
   def profile
-    @user = User.find(params[:id])
+    @user = User.find_by_name( params[:id] )
   end
 
   def favorite
@@ -128,7 +128,7 @@ class PostsController < ApplicationController
   private
 
   def find_post
-    @post = Post.find(params[:id])  
+    @post = Post.find(params[:id])
   end
 
   def post_params
