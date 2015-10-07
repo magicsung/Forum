@@ -1,0 +1,3 @@
+$("<%= j render(:partial => 'comment', :locals => { :comment => @comment } ) %>").appendTo("#commentlist").show(500);
+$("#newtitle").children("input").val("");
+$("#newcontent").children("textarea").val("");

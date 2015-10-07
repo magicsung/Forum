@@ -1,0 +1,24 @@
+<div id="comment<%=comment.id%>" class="panel panel-info" style="display: none">
+  <div class="panel-heading"><strong><%= comment.title %></strong></div>
+  <div class="panel-body"><%= comment.content %></div>
+  <div class="panel-footer">
+    <small>
+      create_by <strong><%= comment.user.try(:name) %></strong> at <%= comment.created_at %>
+    </small>
+    <!-- Owner and Admin can edit, delete. -->
+    <% if current_user %>
+      <% if current_user.id == comment.user_id or current_user.role == 1 %>
+        <%= link_to post_comment_path(@post, comment), :method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-xs pull-right", remote: true do %>
+          <i class="glyphicon glyphicon-trash"></i>
+        <% end %>
+        <!-- Only Owner can delete -->
+        <% if current_user.id == comment.user_id %>
+        <%= link_to edit_post_comment_path(@post, comment), :class => "btn btn-xs pull-right" do %>
+          <i class="glyphicon glyphicon-pencil"></i>
+        <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <div class="clearfix"></div>
+  </div>
+</div>

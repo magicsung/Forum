@@ -9,33 +9,22 @@ class CommentsController < ApplicationController
 
   def create
   @comment = @post.comments.new( comment_params )
-  if @comment.save
-    # comment count
-    @post.comcount += 1
-    # update comment_time to post
-    @post.last_comment_time = @comment.created_at
-    # who creat comment
-    @comment.user_id = current_user.id
-    @post.save
-    @comment.save
 
-    respond_to do |format|
-      format.html
-      format.js
+    if @comment.save
+      # comment count
+      @post.comcount += 1
+      # update comment_time to post
+      @post.last_comment_time = @comment.created_at
+      # who creat comment
+      @comment.user_id = current_user.id
+      @post.save
+      @comment.save
+
+      respond_to do |format|
+        format.html
+        format.js
+      end
     end
-
-  else
-    
-  end
-
-    # if @comment.save
-    #   redirect_to post_path( @post )
-    # else
-    #   flash[:alert] = "Please enter something!"
-    #   redirect_to post_path( @post )
-    #   # render "posts/show"
-    # end
-
   end
 
   def edit
