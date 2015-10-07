@@ -1,66 +1,46 @@
 class PostsController < ApplicationController
 
-  before_action :set_post, :only => [ :show, :edit, :update, :destroy ]
+  before_action :authenticate_user!, :except => [:index, :show]
+
+  before_action :set_post, :only => [ :edit, :update, :destroy ]
 
   def index
-    @posts = pages
-    # sort by comments
-    if (params[:order] == 'comments')
-      @posts = pages.order('comcount DESC')
-    # sort by views
-    elsif (params[:order] == 'views')
-      @posts = pages.order('view DESC')
-    # sort by create_time
-    elsif (params[:order] == 'createtime')
-      @posts = pages.order('created_at ASC')
-    # sort by last_comment_time
-    elsif (params[:order] == 'last_comment_time')
-      @posts = pages.order('last_comment_time DESC')
-    # sort by category
-    elsif (params[:order] == 'category')
-      @posts = pages.order('category_id')
+    if params[:tag] 
+      @tag = Tag.find_by_name( params[:tag] )
+      @posts = @tag.posts.page(params[:page]).per(10).where(status:1).order('created_at DESC')
+    elsif params[:cid] 
+      @category = Category.find( params[:cid]  )
+      @posts = @category.posts
     else
-      @posts = pages.order('created_at DESC')
+      @posts = Post.all
     end
 
-    # Tag filter
-    Tag.all.map do |x| 
-      if (params[:where] == "tag_"+x.name)
-        @posts = x.posts.page(params[:page]).per(10).where(status:1).order('created_at DESC')
-      end
+    if (params[:order] == 'comments')
+      @posts = @posts.order('comcount DESC')
+    elsif (params[:order] == 'views')
+      @posts = @posts.order('view DESC')
+    elsif (params[:order] == 'createtime')
+      @posts = @posts.order('id ASC')
+    elsif (params[:order] == 'last_comment_time')
+      @posts = @posts.order('last_comment_time DESC')
+    elsif (params[:order] == 'category')
+      @posts = @posts.order('category_id')
+    else
+      @posts = @posts.order('id DESC')
     end
 
-    # Category filter
-    Category.all.map do |x| 
-      if (params[:where] == x.name)
-        # filter & sort 
-        if (params[:order] == 'comments')
-          @posts = pages.where(category_id:x.id).order('comcount DESC')
-        elsif (params[:order] == 'views')
-          @posts = pages.where(category_id:x.id).order('view DESC')
-        elsif (params[:order] == 'createtime')
-          @posts = pages.where(category_id:x.id).order('created_at ASC')
-        elsif (params[:order] == 'last_comment_time')
-          @posts = pages.where(category_id:x.id).order('last_comment_time ASC')
-        elsif (params[:order] == 'category')
-          @posts = pages.where(category_id:x.id).order('category_id')  
-        else
-          @posts = pages.where(category_id:x.id).order('created_at DESC')
-        end
-      end
-    end 
+    @posts = @posts.page(params[:page]).per(10).where(status:1)
   end
 
   def show
+    @post = Post.where( :status => 1 ).find( params[:id] )
 
-    if @post.status == 1 # filter post status public
-      @comment =  Comment.new( :post => @post ) #@comment = @post.comments.new
-      # views count
-      @post_comments = @post.comments
-      @post.view +=1
-      @post.save
-    end
+    @comment =  Comment.new( :post => @post ) 
+    @post_comments = @post.comments
 
+    # TODO: use cookie to dedup
+    @post.view +=1
+    @post.save
   end
 
   def new
@@ -69,7 +49,7 @@ class PostsController < ApplicationController
 
   def create
     @post = Post.new( post_params )
-    @post.user_id = current_user.id
+    @post.user = current_user
     
     if @post.save
       flash[:notice] = "Post was successfully created!"
@@ -82,12 +62,7 @@ class PostsController < ApplicationController
   end
 
   def edit
-    # Owner or Admin can edit
-    if @post.user_id == current_user.id or current_user.role == 1
-    else
-      flash[:alert] = "Permission denied!"
-      redirect_to :action => :index
-    end
+    redirect_to :action => :index
   end
 
   def update
@@ -96,87 +71,72 @@ class PostsController < ApplicationController
       @post.upload_file = nil
     end
 
-    if @post.user_id == current_user.id
-      @post.update( post_params )
-      redirect_to :action => :index
-      flash[:notice] = "Post was updated!"
-    else
-      flash[:alert] = "Permission denied!"
-      redirect_to :action => :index
-    end
+    @post.update(post_params)
+      
+    flash[:notice] = "Post was updated!"
+    redirect_to :action => :index      
   end
 
   def destroy
-    # Owner or Admini can delete post
-    if @post.user_id == current_user.id or current_user.role == 1
-      respond_to do |format|
-        format.html
-        format.js
-      end
-      @post.destroy
-    end
+    @post.destroy
 
+    respond_to do |format|
+      format.html
+      format.js
+    end      
   end
 
   def about
-    render "about"
   end
 
+  # TODO: move to users_controller or profiles_controller
   def profile
     @user = User.find(params[:id])
-    render "profile"
   end
 
   def favorite
-    if a = current_user.favorites.find_by_post_id(params[:id])
-      a.destroy
+    @post = Post.find(params[:id])
+
+    if @fav = current_user.favorites.find_by_post_id(@post.id)
+      @fav.destroy
       flash[:notice] = "Aleardy deleted!"
-    else
-      @post = Post.find(params[:id])
-      @fav = Favorite.new
-      @fav.post_id = @post.id
-      @fav.user_id = current_user.id
+    else      
+      @fav = Favorite.new( :post => @post, :user => current_user )
       @fav.save
       flash[:notice] = "Added to favorite"
     end
+
     redirect_to :back
   end
 
   def like
-
     @post = Post.find(params[:id])
 
-    if @a = current_user.likes.find_by_post_id(params[:id])
-      @a.destroy
-      @z = 1
-    else
-      @lik = Like.new
-      @lik.post_id = @post.id
-      @lik.user_id = current_user.id
-      @lik.save
-      @z = 2
+    if @like = current_user.likes.find_by_post_id(@post.id)
+      @like.destroy
+    else  
+      @like = Like.new( :post => @post, :user => current_user )
+      @like.save
     end
     
     respond_to do |format|
-      format.html #{ redirect_to :back }
+      format.html { redirect_to :back }
       format.js
     end
-
   end
-
 
   private
-
-  def pages
-    Post.page(params[:page]).per(10).where(status:1) # filter post_status_public
-  end
 
   def post_params
     params.require(:post).permit(:title, :content, :category_id, :status, :upload_file, :tag_list)
   end
 
   def set_post
-    @post = Post.find( params[:id] )
+    if current_user.admin?
+      @post = Post.find( params[:id] )
+    else
+      @post = current_user.posts.find( params[:id] )
+    end
   end
 
 end

@@ -35,7 +35,7 @@
                 <td><%= link_to f.post.title, post_path(f.post) %></td>
                 <td><%= f.post.content %></td>
                 <td>
-                  <%= link_to favorite_path(f.post.id), :class => "btn btn-xs" do %>
+                  <%= link_to favorite_post_path(f.post), :class => "btn btn-xs" do %>
                     <i class="glyphicon glyphicon-trash"></i>
                   <% end %>
                 </td>
@@ -142,7 +142,7 @@
           <td>
             <% if current_user %>
               <% if current_user.id == @user.id %>
-                <%= link_to like_path(x.post.id), :class => "btn btn-xs" do %>
+                <%= link_to like_post_path(x.post), :class => "btn btn-xs" do %>
                     <i class="glyphicon glyphicon-trash"></i>
                   <% end %>
               <% end %>

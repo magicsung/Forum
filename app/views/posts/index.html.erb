@@ -15,7 +15,7 @@
       <li role="separator" class="divider"></li>
       <% Category.all.map do |x| %>
         <li>
-          <%= link_to posts_path( :where => "#{x.name}" ) do %> 
+          <%= link_to posts_path( :cid => x, :tag => params[:tag] ) do %> 
           <%= x.name %> <span class="badge pull-right"><%= x.posts.size %></span>
           <% end %>
         </li>
@@ -34,7 +34,7 @@
     <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
       <% Tag.all.map do |x| %>
         <li>
-          <%= link_to posts_path( :where => "tag_#{x.name}" ) do %> 
+          <%= link_to posts_path( :tag => x.name, :cid => params[:cid] ) do %> 
           <%= x.name %> <span class="badge pull-right"><%= x.posts.size %></span>
           <% end %>
         </li>
@@ -58,23 +58,14 @@
     <th>Tag</th>
     <th>
       <!-- sort by category -->
-      <% if cat = params[:where] %>
-        Category
-      <% else %>
-        <%= link_to posts_path( :order => "category" ) do %>
-          Category <i class="caret"></i>
-        <% end %>
+      <%= link_to posts_path( :cid => params[:cid], :tag => params[:tag], :order => "category" ) do %>
+        Category <i class="caret"></i>
       <% end %>
     </th>
     <th><p>Title</p></th>
     <th>
       <!-- sort by comments -->
-      <% if cat = params[:where] %>
-        <% filter_sort = posts_path(:where => cat, :order => "comments") %>
-      <% else %>
-        <% filter_sort = posts_path(:order => "comments") %>
-      <% end %>
-      <%= link_to filter_sort  do %> 
+      <%= link_to posts_path(:cid => params[:cid], :tag => params[:tag], :order => "comments")  do %> 
         Comments <i class="caret"></i>
       <% end %>
     </th>
@@ -83,35 +74,20 @@
     </th>
     <th>
       <!-- sort by last_comment_time -->
-      <% if cat = params[:where] %>
-        <% filter_sort = posts_path(:where => cat, :order => "last_comment_time") %>
-      <% else %>
-        <% filter_sort = posts_path(:order => "last_comment_time") %>
-      <% end %>
-      <%= link_to filter_sort  do %> 
+      <%= link_to posts_path(:cid => params[:cid], :tag => params[:tag], :order => "last_comment_time")  do %> 
         Last_comment_time <i class="caret"></i>
       <% end %>
     </th>
     <th>
       <!-- sor by views -->
-      <% if cat = params[:where] %>
-        <% filter_sort = posts_path(:where => cat, :order => "views") %>
-      <% else %>
-        <% filter_sort = posts_path(:order => "views") %>
-      <% end %>
-      <%= link_to filter_sort  do %> 
+      <%= link_to posts_path(:cid => params[:cid], :tag => params[:tag], :order => "views")  do %> 
         Views <i class="caret"></i>
       <% end %>
     </th>
     <th><p>Created by</p></th>
     <th>
       <!-- sort by post_created_time -->
-      <% if cat = params[:where] %>
-        <% filter_sort = posts_path(:where => cat, :order => "createtime") %>
-      <% else %>
-        <% filter_sort = posts_path(:order => "createtime") %>
-      <% end %>
-      <%= link_to filter_sort  do %> 
+      <%= link_to posts_path(:cid => params[:cid], :tag => params[:tag], :order => "createtime")  do %> 
         Created_at <i class="caret"></i>
       <% end %>
     </th>
@@ -149,9 +125,8 @@
       <td><%= p.comcount %></td>
       <td>
         <!-- list comment user in this post -->
-        <% b = p.comments.map do |x|  x.user.name  end %>
-        <% b.uniq.map do |y| %>
-          <%= y %>
+        <% p.comment_users.each do |u| %>
+          <%= link_to u.name, profile_path(u) %>
         <% end %>
       </td>
       <td>
@@ -174,17 +149,20 @@
       <td>
         <!-- Owner or Admin can Delete, only Owner can edit. -->
         <% if current_user %>
-          <% if current_user.id == p.user_id %>
+          
+          <% if current_user == p.user %>
             <%= link_to edit_post_path(p), :class => "btn btn-xs" do %>
               <i class="glyphicon glyphicon-pencil"></i>
             <% end %>
           <% end %>
-          <% if current_user.id == p.user_id or current_user.role == 1 %>
+
+          <% if current_user == p.user || current_user.admin? %>
             <%= link_to post_path(p),:method => :delete, :data => { :confirm => "Are you sure?" }, :class => "btn btn-xs pull-right", remote: true do %>
               <i class="glyphicon glyphicon-trash"></i>
             <% end %>
             <div class="clearfix"></div>
           <% end %>
+          
         <% end %>
       </td>
     </tr>

@@ -5,6 +5,28 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:facebook]
 
+  validates_presence_of :name
+
+  has_many :likes
+  has_many :favorites
+  has_many :posts
+  has_many :categorys
+  has_many :comments
+
+  has_many :friendships
+  has_many :friends, :through => :friendships
+  has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
+  has_many :inverse_friends, :through => :inverse_friendships, :source => :user
+
+  ROLE = { "User" => 0, "Admin" => 1 }
+
+  def admin?
+    self.role == 1
+  end
+
+  def role_name
+    ROLE[ self.role ]
+  end
 
   def self.from_omniauth(auth)
     # Case 1: Find existing user by facebook uid
@@ -35,27 +57,5 @@ class User < ActiveRecord::Base
     user.save!
     return user
   end
-
   
-
-
-  validates_presence_of :name
-
-  has_many :likes
-  has_many :favorites
-  has_many :posts
-  has_many :categorys
-  has_many :comments
-
-  has_many :friendships
-  has_many :friends, :through => :friendships
-  has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
-  has_many :inverse_friends, :through => :inverse_friendships, :source => :user
-
-  ROLE = { "User" => 0, "Admin" => 1 }
-
-  def role_name
-    ROLE[ self.role ]
-  end
-
 end

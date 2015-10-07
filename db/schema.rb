@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20151005025258) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "user_id"
+    t.integer  "user_id" 
   end
 
   add_index "categories", ["user_id"], name: "index_categories_on_user_id"
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20151005025258) do
   create_table "favorites", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "user_id"
+    t.integer  "user_id" # index
     t.integer  "post_id"
   end
 
@@ -81,8 +81,8 @@ ActiveRecord::Schema.define(version: 20151005025258) do
     t.datetime "updated_at",                           null: false
     t.integer  "user_id"
     t.integer  "category_id"
-    t.integer  "comcount",                 default: 0, null: false
-    t.datetime "last_comment_time"
+    t.integer  "comcount",                 default: 0, null: false  # comments_count
+    t.datetime "last_comment_time" # last_commented_at
     t.string   "upload_file_file_name"
     t.string   "upload_file_content_type"
     t.integer  "upload_file_file_size"
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 20151005025258) do
   add_index "posts", ["user_id"], name: "index_posts_on_user_id"
 
   create_table "tags", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name" # index
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -115,10 +115,10 @@ ActiveRecord::Schema.define(version: 20151005025258) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "imgae"
-    t.string   "provider"
-    t.string   "uid"
-    t.string   "token"
-    t.string   "image"
+    t.string   "provider" # remove
+    t.string   "uid" # fb_uid
+    t.string   "token" # fb_token
+    t.string   "image" # fb_image
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

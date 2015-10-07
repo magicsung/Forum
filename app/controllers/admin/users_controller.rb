@@ -1,6 +1,7 @@
 class Admin::UsersController < ApplicationController
 
-  before_action :authenticate
+  before_action :authenticate_user!
+  before_action :authenticate_admin
   before_action :set_user, :only => [ :edit, :update, :destroy]
 
   def edit
@@ -25,13 +26,6 @@ class Admin::UsersController < ApplicationController
 
 
   protected
-
-  def authenticate
-    if current_user.role == 1
-    else
-      render file: "#{Rails.root}/public/404.html", layout: false, status: 404
-    end
-  end
 
   def user_params
     params.require(:user).permit( :name, :email, :about, :role )

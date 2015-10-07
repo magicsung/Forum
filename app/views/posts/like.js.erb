@@ -1,6 +1,6 @@
-<% if @z == 1 %>
+<% if @like.persisted? %>
   $("#likebutton").children('span').first().attr("class", "glyphicon glyphicon-star-empty");
-<% elsif @z == 2 %>
+<% else %>
   $("#likebutton").children('span').first().attr("class", "glyphicon glyphicon-star");
 <% end %>
 

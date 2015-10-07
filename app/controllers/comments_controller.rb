@@ -1,24 +1,18 @@
 class CommentsController < ApplicationController
 
+  before_action :authenticate_user!
+  
   before_action :find_post, :only => [ :create, :edit, :update, :destroy ]
   before_action :find_comment, :only => [ :edit, :update, :destroy]
 
-  def new
-    
-  end
 
   def create
-  @comment = @post.comments.new( comment_params )
+    @comment = @post.comments.new( comment_params )
+    @comment.user = current_user
 
     if @comment.save
-      # comment count
-      @post.comcount += 1
-      # update comment_time to post
       @post.last_comment_time = @comment.created_at
-      # who creat comment
-      @comment.user_id = current_user.id
       @post.save
-      @comment.save
 
       respond_to do |format|
         format.html
@@ -28,40 +22,21 @@ class CommentsController < ApplicationController
   end
 
   def edit
-    # Owner can edit comment
-    if @comment.user_id == current_user.id
-    else
-      flash[:alert] = "Permission denied!"
-      redirect_to :back
-    end
   end
 
   def update
-    if @comment.user_id == current_user.id
-    else
-      flash[:alert] = "Permission denied!"
-    end
+    # TODO    
     redirect_to post_path( @post )    
   end
 
   def destroy
+    @comment.destroy
 
-    # Owner or Admin can delete comment
-    if @comment.user_id == current_user.id or current_user.role == 1
-      respond_to do |format|
-        format.html
-        format.js
-      end
-      @comment.destroy
-      @post.comcount -= 1
-      @post.save
+    respond_to do |format|
+      format.html
+      format.js
     end
-
   end
-
-
-
-  #private
 
   protected
 
@@ -73,9 +48,15 @@ class CommentsController < ApplicationController
     @post = Post.find( params[:post_id] )
   end
 
+
   def find_comment
-    @comment = @post.comments.find( params[:id] )
+    if current_user.admin?
+      @comment = @post.comments.find( params[:id] )
+    else
+      @comment = @post.comments.where( :user_id => current_user.id ).find( params[:id] )
+    end
   end
+
 
 end
 

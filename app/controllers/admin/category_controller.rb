@@ -1,6 +1,7 @@
 class Admin::CategoryController < ApplicationController
 
-  before_action :authenticate
+  before_action :authenticate_user!
+  before_action :authenticate_admin
   before_action :set_category, :only => [ :update, :destroy ]
 
   def create
@@ -30,17 +31,7 @@ class Admin::CategoryController < ApplicationController
     redirect_to admin_posts_path
   end
 
-
-
-
   private
-
-  def authenticate
-    if current_user.role == 1
-    else
-      render file: "#{Rails.root}/public/404.html", layout: false, status: 404
-    end
-  end
 
   def category_params
     params.require(:category).permit(:name)
