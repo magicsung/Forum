@@ -8,7 +8,7 @@ class PostsController < ApplicationController
   def index
     if params[:tag] 
       @tag = Tag.find_by_name( params[:tag] )
-      @posts = @tag.posts.page(params[:page]).per(10).where(status:1).order('created_at DESC')
+      @posts = @tag.posts.page(params[:page]).per(10).where(status:1).where("schedule < (?)", Time.now).order('created_at DESC')
     elsif params[:cid] 
       @category = Category.find( params[:cid]  )
       @posts = @category.posts
@@ -30,11 +30,11 @@ class PostsController < ApplicationController
       @posts = @posts.order('id DESC')
     end
 
-    @posts = @posts.page(params[:page]).per(10).where(status:1)
+    @posts = @posts.page(params[:page]).per(10).where(status:1).where("schedule < (?)", Time.now)
   end
 
   def show
-    @post = Post.where( :status => 1 ).find( params[:id] )
+    @post = Post.where( :status => 1 ).where("schedule < (?)", Time.now).find( params[:id] )
 
     @comment =  Comment.new( :post => @post ) 
     @post_comments = @post.comments
@@ -132,7 +132,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :content, :category_id, :status, :upload_file, :tag_list)
+    params.require(:post).permit(:title, :content, :category_id, :status, :upload_file, :tag_list, :schedule)
   end
 
   def set_post

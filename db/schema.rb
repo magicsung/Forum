@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151005025258) do
+ActiveRecord::Schema.define(version: 20151007123050) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "user_id" 
+    t.integer  "user_id"
   end
 
   add_index "categories", ["user_id"], name: "index_categories_on_user_id"
@@ -38,11 +38,12 @@ ActiveRecord::Schema.define(version: 20151005025258) do
   create_table "favorites", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "user_id" # index
+    t.integer  "user_id"
     t.integer  "post_id"
   end
 
   add_index "favorites", ["post_id"], name: "index_favorites_on_post_id"
+  add_index "favorites", ["user_id"], name: "index_favorites_on_user_id"
 
   create_table "friendships", force: :cascade do |t|
     t.integer  "status"
@@ -81,22 +82,25 @@ ActiveRecord::Schema.define(version: 20151005025258) do
     t.datetime "updated_at",                           null: false
     t.integer  "user_id"
     t.integer  "category_id"
-    t.integer  "comcount",                 default: 0, null: false  # comments_count
-    t.datetime "last_comment_time" # last_commented_at
+    t.integer  "comcount",                 default: 0, null: false
+    t.datetime "last_comment_time"
     t.string   "upload_file_file_name"
     t.string   "upload_file_content_type"
     t.integer  "upload_file_file_size"
     t.datetime "upload_file_updated_at"
+    t.datetime "schedule"
   end
 
   add_index "posts", ["category_id"], name: "index_posts_on_category_id"
   add_index "posts", ["user_id"], name: "index_posts_on_user_id"
 
   create_table "tags", force: :cascade do |t|
-    t.string   "name" # index
+    t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "tags", ["name"], name: "index_tags_on_name"
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
@@ -115,10 +119,10 @@ ActiveRecord::Schema.define(version: 20151005025258) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "imgae"
-    t.string   "provider" # remove
-    t.string   "uid" # fb_uid
-    t.string   "token" # fb_token
-    t.string   "image" # fb_image
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "token"
+    t.string   "image"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
