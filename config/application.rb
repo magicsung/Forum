@@ -24,3 +24,5 @@ module Forum
     config.active_record.raise_in_transactional_callbacks = true
   end
 end
+
+Time::DATE_FORMATS[:due_date] = "%B %d at %I:%M %p"
