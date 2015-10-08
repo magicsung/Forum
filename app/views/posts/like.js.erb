@@ -1,9 +1,9 @@
 <% if @like.persisted? %>
-  $("#likebutton").children('span').first().attr("class", "glyphicon glyphicon-star-empty");
-  $("#likebutton").attr("data-content", "<h6 class='text-center' style='color:black;'>Like</h6>");
-<% else %>
   $("#likebutton").children('span').first().attr("class", "glyphicon glyphicon-star");
-  $("#likebutton").attr("data-content", "<h6 class='text-center' style='color:black;'>Unlike</h6>");
+  $("#likebutton").attr("data-content", "<h6 class='text-center' style='color:black;'>UnLike</h6>");
+<% else %>
+  $("#likebutton").children('span').first().attr("class", "glyphicon glyphicon-star-empty");
+  $("#likebutton").attr("data-content", "<h6 class='text-center' style='color:black;'>like</h6>");
 <% end %>
 
 $("#likebutton").children('span').last().text("<%= @post.likes.count %>");

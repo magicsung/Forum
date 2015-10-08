@@ -29,9 +29,9 @@
           :method => :post, :"data-toggle"=>"popover", :"data-placement"=>"left", 
           :"data-content"=>"<h6 class='text-center' style='color:black;'>Add to favorites.</h6>" do%>
           <% if current_user.favorites.find_by_post_id(@post) %>
-            <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>     
+            <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>     
           <% else %>
-            <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 
+            <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span> 
           <% end %>
         <% end %>
     <% end %>

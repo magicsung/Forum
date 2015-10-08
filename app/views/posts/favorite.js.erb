@@ -1,7 +1,7 @@
 <% if @fav.persisted? %>
-  $("#favbutton").children('span').first().attr("class", "glyphicon glyphicon-heart-empty");
-  $("#favbutton").attr("data-content", "<h6 class='text-center' style='color:black;'>Add to favorites.</h6>");
-<% else %>
   $("#favbutton").children('span').first().attr("class", "glyphicon glyphicon-heart");
   $("#favbutton").attr("data-content", "<h6 class='text-center' style='color:black;'>Remove favorites.</h6>");
+<% else %>
+  $("#favbutton").children('span').first().attr("class", "glyphicon glyphicon-heart-empty");
+  $("#favbutton").attr("data-content", "<h6 class='text-center' style='color:black;'>Add to favorites.</h6>");
 <% end %>
