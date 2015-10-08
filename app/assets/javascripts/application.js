@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sprockets
+//= require select2
 
 $(document).on('page:change', function(){
   $('[data-toggle="popover"]').popover({

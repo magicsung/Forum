@@ -1,6 +1,6 @@
 <div class="form-group">
   <%= n.label :category_id, "Category" %>
-  <%= n.select :category_id, Category.all.map{ |x| [x.name, x.id] },{} , :class => 'form-control' %>
+  <%= n.select :category_id, Category.all.map{ |x| [x.name, x.id] },{} , :class => 'form-control', :id => "category-select" %>
 </div>
 
 <div class="form-group">
@@ -44,7 +44,11 @@
 
 
 
+<script>
 
+  $( "#category-select" ).select2();
+
+</script>
 
 
 
