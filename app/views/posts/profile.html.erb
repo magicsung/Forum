@@ -3,15 +3,77 @@
   <%= image_tag(@user.image) %> 
 <% end %>
 <%= @user.name %> 's profile
+
+<!-- Friendship -->
+<% unless current_user == @user %>
+  <% if current_user.friendships.find_by_friend_id(@user) %>
+    <% if current_user.friendships.find_by_friend_id(@user).status == 3 %>
+      <%= link_to "Friend", friendship_index_path(id:@user), :method => :create, :class => "btn btn-xs btn-primary disabled" %>
+    <% else %>
+      <%= link_to "Require already sent", friendship_index_path(id:@user), :method => :create, :class => "btn btn-xs btn-primary disabled" %>
+    <% end %>
+  <% else %>
+    <%= link_to "Add as friend", friendship_index_path(id:@user), :method => :create, :class => "btn btn-xs btn-primary" %>
+  <% end %>
+<% end %>
+<!-- Friendship -->
 </h2>
+
 
 <p>
   <%= @user.about %>
 </p>
 
-<!-- Show draft box & favorite, when owner login -->
+<!-- Friendships -->
 <% if current_user %>
   <% if current_user.id == @user.id %>
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Friends</h3>
+        <table class="table">
+          <tr class="warning">
+            <td>Name</td>
+            <td>Status</td>
+            <td></td>
+          </tr>
+          <% @user.friendships.each do |f| %>
+            <tr>
+            <%# raise %>
+              <td><strong><%= link_to f.friend.name, profile_path(f.friend.name) %></strong></td>
+              <td><%= f.friendship_status %></td>
+              <td>
+                <%= link_to friendship_path(f), :method => :delete, :class => "btn btn-xs" do %>
+                  <i class="glyphicon glyphicon-trash"></i>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+      <div class="col-md-4">
+        <h3>friendship require</h3>
+        <table class="table">
+          <tr class="warning">
+            <td>Name</td>
+            <td></td>
+          </tr>
+          <% Friendship.where(friend_id:@user.id).where(status:1).each do |f| %>
+            <tr>
+              <td><strong><%= link_to f.user.name, profile_path(f.user.name) %></strong> would like to invite you to become a friend.</td>
+              <td>
+                <%= link_to friendship_path(f), :method => :patch, :class => "btn btn-xs" do %>
+                  <i class="glyphicon glyphicon-ok"></i>
+                <% end %>
+                <%= link_to reject_friendship_path(f), :method => :patch, :class => "btn btn-xs" do %>
+                  <i class="glyphicon glyphicon-remove"></i>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+<!-- Show draft box & favorite, when owner login -->
     <div class="row">
       <div class="col-md-4">
         <h3>Favorites</h3>
