@@ -3,7 +3,8 @@
 Devise.setup do |config|
   
   # Facebook login
-  config.omniauth :facebook, '895552817202858', "add230acf4ca7a9d34a2e20af619314f", 
+  fb_config = Rails.application.config_for(:fb)
+  config.omniauth fb_config["app_id"] fb_config["secret"], 
                     scope: 'public_profile,email', info_fields: 'email,name'
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
