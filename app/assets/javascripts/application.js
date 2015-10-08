@@ -22,6 +22,6 @@ $(document).on('page:change', function(){
       trigger: 'hover'
   });
 
-
-
 });
+
+Turbolinks.enableProgressBar();
