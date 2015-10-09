@@ -27,13 +27,16 @@ class Post < ActiveRecord::Base
   end
   
   def tag_list
-    self.tags.map{ |t| t.name }.join(",")
+    self.tags.map{ |t| t.name }
   end
 
   def tag_list=(str)
-    arr = str.split(",")
+    # arr = str .split(",")
+    if str.first == ""
+      str.shift 
+    end
 
-    self.tags = arr.map do |t|
+    self.tags = str.map do |t|
       tag = Tag.find_by_name(t)
       unless tag
         tag = Tag.create!( :name => t )

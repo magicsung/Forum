@@ -132,7 +132,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :content, :category_id, :status, :upload_file, :tag_list, :schedule)
+    params.require(:post).permit(:title, :content, :category_id, :status, :upload_file, :schedule, :tag_list => [])
   end
 
   def set_post
