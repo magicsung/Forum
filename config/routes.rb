@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     resources :category
   end
 
+  resources :ubikes
 
   #get 'posts/:id' => 'posts#view_count'
 

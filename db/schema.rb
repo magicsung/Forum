@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151007123050) do
+ActiveRecord::Schema.define(version: 20151012074831) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -102,6 +102,23 @@ ActiveRecord::Schema.define(version: 20151007123050) do
 
   add_index "tags", ["name"], name: "index_tags_on_name"
 
+  create_table "ubikes", force: :cascade do |t|
+    t.integer  "ubike_id"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "uploads", force: :cascade do |t|
+    t.integer  "post_id"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.string   "upload_file_file_name"
+    t.string   "upload_file_content_type"
+    t.integer  "upload_file_file_size"
+    t.datetime "upload_file_updated_at"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "name"
     t.string   "about"
@@ -118,7 +135,6 @@ ActiveRecord::Schema.define(version: 20151007123050) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
-    t.string   "imgae"
     t.string   "provider"
     t.string   "uid"
     t.string   "token"
